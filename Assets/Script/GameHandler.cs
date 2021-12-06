@@ -9,9 +9,15 @@ public class GameHandler : MonoBehaviour
     private Input input;
 
     void Start() {
-        input = gameObject.GetComponent<Input>();    
+        input = gameObject.GetComponent<Input>();
+        GenerateFormula();
     }
 
     void Update() {
+    }
+
+    private void GenerateFormula() {
+        Formula formula = new Formula();
+        formula.GenerateQuestion(8);
     }
 }
