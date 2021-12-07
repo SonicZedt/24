@@ -23,20 +23,47 @@ public class Formula
         this.number_temp = this.result;
     }
 
-    private int RandomNumber() {
-        return Random.Range(0, number_temp);
-    }
-
-    public int Compute(string formula) {
+    public int Result(string formula = null) {
         // Return result of formula
         DataTable dt = new DataTable();
+
+        if(formula == null) formula = question;
         return (int)dt.Compute(formula, " ");
     }
 
     public void GenerateQuestion(int operandCount = 4) {
         List<int> operands_temp = new List<int>();
         List<string> operators_temp = new List<string>();
-        
+
+        int RandomNumber(List<int> list = null) {
+            if(list != null) {
+                int index = Random.Range(0, list.Count - 1);
+                return list[index];
+            }
+
+            return Random.Range(0, number_temp);
+        }
+
+        void Reverse() {
+            operands.Add(number_temp);
+            for(int i = operands_temp.Count - 1; i >= 0; i--) {
+                operands.Add(operands_temp[i]);
+                operators.Add(operators_temp[i]);
+            }
+        }
+
+        void Build() {
+            StringBuilder stringBuilder = new StringBuilder();
+            question = null;
+
+            for(int i = 0; i < operands.Count; i++) {
+                stringBuilder.Append(operands[i]);
+                if(i < operators.Count) stringBuilder.Append(operators[i]);
+            }
+            
+            question = stringBuilder.ToString();
+        }
+
         #region Operator
         int Adder() {
             int n = RandomNumber();
@@ -53,31 +80,35 @@ public class Formula
 
             return n;
         }
+
+        int Multificator() {
+            List<int> Factors(int number) {
+                List<int> factors = new List<int>();
+                int number_max = (int)Mathf.Sqrt(number);
+
+                for(int i = 1; i <= number_max; ++i) {
+                    if(number % i == 0) {
+                        factors.Add(i);
+                        if(i == number/i) continue;
+                        factors.Add(number/i);
+                    }
+                }
+
+                return factors;
+            }
+
+            int n = RandomNumber(Factors(number_temp));
+            int div = number_temp / n;
+            number_temp = div;
+
+            return n;
+        }
         #endregion
-
-        void Reverse() {
-            operands.Add(number_temp);
-            for(int i = operands_temp.Count - 1; i >= 0; i--) {
-                operands.Add(operands_temp[i]);
-                operators.Add(operators_temp[i]);
-            }
-        }
-
-        void Build() {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            for(int i = 0; i < operands.Count; i++) {
-                stringBuilder.Append(operands[i]);
-                if(i < operators.Count) stringBuilder.Append(operators[i]);
-            }
-            
-            question = stringBuilder.ToString();
-        }
 
         for(int i = 0; i < operandCount - 1; i++) {
             string opr = null;
             int opd = 0;
-            int oprSelector = Random.Range(0, 2);
+            int oprSelector = Random.Range(0, 3);
 
             switch(oprSelector) {
                 case 0:
@@ -88,10 +119,11 @@ public class Formula
                     opr = "-";
                     opd = Subtractor();
                     break;
-                /* TODO: complete arithmatic
                 case 2:
                     opr = "*";
+                    opd = Multificator();
                     break;
+                /* TODO: complete arithmatic
                 case 3:
                     opr = "/";
                     break;

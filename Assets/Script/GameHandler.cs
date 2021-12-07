@@ -18,6 +18,6 @@ public class GameHandler : MonoBehaviour
 
     private void GenerateFormula() {
         Formula formula = new Formula();
-        formula.GenerateQuestion(8);
+        formula.GenerateQuestion();
     }
 }
