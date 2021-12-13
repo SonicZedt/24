@@ -237,6 +237,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 519420030}
+  result: 24
+  maxModifier: 10
+  operands: 
+  operators: []
 --- !u!4 &422122196
 Transform:
   m_ObjectHideFlags: 0
@@ -278,7 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 877498343}
-  card: {fileID: 3826568404523397273, guid: 533c9d291cb77cf4a8f8973ab7e797ba, type: 3}
+  cardPrefab: {fileID: 8569979042364928701, guid: 533c9d291cb77cf4a8f8973ab7e797ba, type: 3}
   deck: {fileID: 590045070}
   cardList: []
 --- !u!1 &513712361

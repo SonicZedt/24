@@ -6,25 +6,29 @@ using UnityEngine;
 
 public class Formula
 {
-    public int result;
+    public int result, maxModifier;
     public List<int> operands = new List<int>();
     public List<string> operators = new List<string>();
     public string question;
 
-    private int number_temp;
+    private int numberTemp;
 
-    public Formula(int result = 24) {
+    public Formula(int result = 24, int maxModifier = 24) {
         this.result = result;
-        this.number_temp = this.result;
+        this.maxModifier = maxModifier;
+        this.numberTemp = this.result;
     }
 
     public void SetResult(int result) {
         this.result = result;
-        this.number_temp = this.result;
+        this.numberTemp = this.result;
+    }
+
+    public void SetModifier(int maxModifier) {
+        this.maxModifier = maxModifier;
     }
 
     public int Result(string formula = null) {
-        // Return result of formula
         DataTable dt = new DataTable();
 
         if(formula == null) formula = question;
@@ -32,24 +36,42 @@ public class Formula
     }
 
     public void GenerateQuestion(int operandCount = 4) {
-        List<int> operands_temp = new List<int>();
-        List<string> operators_temp = new List<string>();
-
         int RandomNumber(List<int> list = null) {
+            int number = 0;
+
             if(list != null) {
                 int index = Random.Range(0, list.Count - 1);
-                return list[index];
+                number = list[index];
             }
 
-            return Random.Range(0, number_temp);
+            if(maxModifier == 0) number = 0;
+            else number = Random.Range(1, maxModifier);
+            return number;
         }
 
-        void Reverse() {
-            operands.Add(number_temp);
-            for(int i = operands_temp.Count - 1; i >= 0; i--) {
-                operands.Add(operands_temp[i]);
-                operators.Add(operators_temp[i]);
+        void Fix() {
+            int gap = result - numberTemp;
+            Debug.Log($"gap: {gap} | opr[0] {operands[0]}");
+            
+            /*
+                FIXME: can not fix if * is the first operator
+                possible cause of result mismatch:
+                a * b + c * d
+            */
+
+            switch (operators[0]) {
+                case "*":
+                    operands[0] = 1;
+                    Debug.Log("Fix action: B");
+                    break;
+                default:
+                    if(operands[0] < result) operands[0] += gap;
+                    else operands[0] -= gap;
+                    Debug.Log("Fix action: C");
+                    break;
             }
+            
+            Build();
         }
 
         void Build() {
@@ -62,21 +84,23 @@ public class Formula
             }
             
             question = stringBuilder.ToString();
+            Debug.Log("Q: " + question);
+            if(Result() != result) Fix();
         }
 
         #region Operator
         int Adder() {
             int n = RandomNumber();
-            int diff = number_temp - n;
-            number_temp = diff;
+            int diff = numberTemp - n;
+            numberTemp = diff;
 
             return n;
         }
 
         int Subtractor() {
             int n = RandomNumber();
-            int sum = number_temp + n;
-            number_temp = sum;
+            int sum = numberTemp + n;
+            numberTemp = sum;
 
             return n;
         }
@@ -97,9 +121,9 @@ public class Formula
                 return factors;
             }
 
-            int n = RandomNumber(Factors(number_temp));
-            int div = number_temp / n;
-            number_temp = div;
+            int n = RandomNumber(Factors(numberTemp));
+            int div = numberTemp / n;
+            numberTemp = div;
 
             return n;
         }
@@ -108,7 +132,7 @@ public class Formula
         for(int i = 0; i < operandCount - 1; i++) {
             string opr = null;
             int opd = 0;
-            int oprSelector = Random.Range(0, 3);
+            int oprSelector = Random.Range(0, 2);
 
             switch(oprSelector) {
                 case 0:
@@ -119,22 +143,24 @@ public class Formula
                     opr = "-";
                     opd = Subtractor();
                     break;
+                /* TODO: complete arithmatic
                 case 2:
                     opr = "*";
                     opd = Multificator();
                     break;
-                /* TODO: complete arithmatic
                 case 3:
                     opr = "/";
                     break;
                 */
             }
 
-            operands_temp.Add(opd);
-            operators_temp.Add(opr);
+            operands.Add(opd);
+            operators.Add(opr);
         }
 
-        Reverse();
+        operands.Add(numberTemp);
+        operands.Reverse();
+        operators.Reverse();
         Build();
     }
 }

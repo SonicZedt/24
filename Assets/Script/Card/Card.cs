@@ -1,7 +1,12 @@
 using UnityEngine;
+using TMPro;
 
-[CreateAssetMenu(fileName = "Card")]
-public class Card : ScriptableObject
+public class Card : MonoBehaviour
 {
+    public TextMeshProUGUI valueText;
     public int value;
+
+    void Start() {
+        valueText.text = value.ToString();
+    }
 }
