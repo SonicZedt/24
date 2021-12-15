@@ -36,11 +36,17 @@ public class CardHandler : MonoBehaviour
                 Card cardGenerator = cardList[i].GetComponent<Card>();
                 cardGenerator.value = gameHandler.operands[i];
 
+                /* FIXME: slotPosition index is broken
                 // Move card to random deck slot position
                 int index = Random.Range(0, slotPosition.Count);
+                
+                Debug.Log("cardlist count: " + cardList.Count);
+                Debug.Log(i);
+                //Debug.Log(slotPosition[index]);
                 cardList[i].transform.position = slotPosition[index];
 
                 slotPosition.RemoveAt(index);
+                */
             }
         }
 

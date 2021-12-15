@@ -648,8 +648,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 519420030}
   result: 24
-  maxModifier: 10
-  operandCount: 4
+  maxModifier: 50
+  operandCount: 8
   operands: 
   operators: []
 --- !u!4 &422122196
@@ -1197,9 +1197,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99250241ab2a384418467af1174df080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameHandler: {fileID: 422122195}
   deckHigh: {fileID: 513712362}
   deckLow: {fileID: 609013713}
-  activeDeck: {fileID: 513712362}
   slot: []
 --- !u!1 &609013712
 GameObject:

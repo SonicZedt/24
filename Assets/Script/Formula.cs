@@ -6,26 +6,25 @@ using UnityEngine;
 
 public class Formula
 {
-    public int result, maxModifier;
+    public int MaxModifier { 
+        get { return maxModifier; }
+        set {
+        if(value >= result) maxModifier = this.result / 2;
+        else maxModifier = value;
+        }
+    }
+
     public List<int> operands = new List<int>();
     public List<string> operators = new List<string>();
     public string question;
-
+    
+    private int result, maxModifier;
     private int numberTemp;
 
     public Formula(int result = 24, int maxModifier = 24) {
         this.result = result;
-        this.maxModifier = maxModifier;
-        this.numberTemp = this.result;
-    }
-
-    public void SetResult(int result) {
-        this.result = result;
-        this.numberTemp = this.result;
-    }
-
-    public void SetModifier(int maxModifier) {
-        this.maxModifier = maxModifier;
+        MaxModifier = maxModifier;
+        this.numberTemp = result;
     }
 
     public int Result(string formula = null) {
@@ -53,11 +52,7 @@ public class Formula
             int gap = result - numberTemp;
             Debug.Log($"gap: {gap} | opr[0] {operands[0]}");
             
-            /*
-                FIXME: can not fix if * is the first operator
-                possible cause of result mismatch:
-                a * b + c * d
-            */
+            // FIXME: * as first operator causes result mismatch.
 
             switch (operators[0]) {
                 case "*":
