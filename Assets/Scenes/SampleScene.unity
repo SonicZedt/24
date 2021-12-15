@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 87236354}
   - component: {fileID: 87236355}
+  - component: {fileID: 87236356}
   m_Layer: 0
   m_Name: Deck_Slot_Low_2
   m_TagString: Untagged
@@ -205,6 +206,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &87236356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87236353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4074e3adac5294d95f89cbe76e411c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &422122194
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,6 +252,7 @@ MonoBehaviour:
   camera: {fileID: 519420030}
   result: 24
   maxModifier: 10
+  operandCount: 4
   operands: 
   operators: []
 --- !u!4 &422122196
@@ -477,7 +491,7 @@ GameObject:
   - component: {fileID: 537508820}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Card Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -788,6 +802,7 @@ GameObject:
   m_Component:
   - component: {fileID: 845268446}
   - component: {fileID: 845268447}
+  - component: {fileID: 845268448}
   m_Layer: 0
   m_Name: Deck_Slot_Low_3
   m_TagString: Untagged
@@ -860,6 +875,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &845268448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845268445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4074e3adac5294d95f89cbe76e411c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &877498342
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,6 +932,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1242404958}
   - component: {fileID: 1242404959}
+  - component: {fileID: 1242404960}
   m_Layer: 0
   m_Name: Deck_Slot_Low_0
   m_TagString: Untagged
@@ -977,6 +1005,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1242404960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242404957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4074e3adac5294d95f89cbe76e411c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1609171166
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,6 +1027,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1609171167}
   - component: {fileID: 1609171168}
+  - component: {fileID: 1609171169}
   m_Layer: 0
   m_Name: Deck_Slot_Low_1
   m_TagString: Untagged
@@ -1059,3 +1100,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1609171169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609171166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4074e3adac5294d95f89cbe76e411c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

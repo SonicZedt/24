@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Handler
   - Card
+  - Card Canvas
   layers:
   - Default
   - TransparentFX
