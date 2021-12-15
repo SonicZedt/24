@@ -75,7 +75,9 @@ public class Formula
 
             for(int i = 0; i < operands.Count; i++) {
                 stringBuilder.Append(operands[i]);
-                if(i < operators.Count) stringBuilder.Append(operators[i]);
+                
+                if(i >= operators.Count) break;
+                stringBuilder.Append(operators[i]);
             }
             
             question = stringBuilder.ToString();
