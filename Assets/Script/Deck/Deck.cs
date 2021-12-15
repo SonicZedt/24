@@ -4,19 +4,33 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    public Transform deckHigh, deckLow;
-    public Transform activeDeck;
+    public GameHandler gameHandler;
+
+    [Header("Deck")]
+    public Transform deckHigh;
+    public Transform deckLow;
     public List<Transform> slot = new List<Transform>();
+    
+    private Transform activeDeck;
 
     void Start() {
+        HideDeck();
+        GetActiveDeck();
         SetSlotList();
     }
 
     private void GetActiveDeck() {
-        // TODO: set [Transform] active (Deck_Low or Deck_High) based on total card (4 or 8)
+        if(gameHandler.operandCount == 8) activeDeck = deckHigh;
+        else if(gameHandler.operandCount == 4) activeDeck = deckLow;
     }
 
     private void SetSlotList() {
+        activeDeck.gameObject.SetActive(true);
         foreach(Transform availableSlot in activeDeck) slot.Add(availableSlot);
+    }
+
+    private void HideDeck() {
+        deckHigh.gameObject.SetActive(false);
+        deckLow.gameObject.SetActive(false);
     }
 }
