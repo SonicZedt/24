@@ -13,17 +13,24 @@ public class Formula
         else maxModifier = value;
         }
     }
+    public int OperandCount {
+        get { return operandCount; }
+        set {
+            if(value >= 8) this.operandCount = 8;
+            else this.operandCount = 4;
+        }
+    }
 
     public List<int> operands = new List<int>();
     public List<string> operators = new List<string>();
     public string question;
     
-    private int result, maxModifier;
-    private int numberTemp;
+    private int result, maxModifier, numberTemp, operandCount;
 
-    public Formula(int result = 24, int maxModifier = 24) {
+    public Formula(int result, int maxModifier, int operandCount) {
         this.result = result;
         MaxModifier = maxModifier;
+        OperandCount = operandCount;
         this.numberTemp = result;
     }
 
@@ -34,7 +41,7 @@ public class Formula
         return (int)dt.Compute(formula, " ");
     }
 
-    public void GenerateQuestion(int operandCount = 4) {
+    public void GenerateQuestion() {
         int RandomNumber(List<int> list = null) {
             int number = 0;
 
@@ -126,7 +133,7 @@ public class Formula
         }
         #endregion
 
-        for(int i = 0; i < operandCount - 1; i++) {
+        for(int i = 0; i < OperandCount - 1; i++) {
             string opr = null;
             int opd = 0;
             int oprSelector = Random.Range(0, 2);

@@ -20,21 +20,15 @@ public class GameHandler : MonoBehaviour
     }
 
     void Start() {
-        GenerateFormula(result, maxModifier, operandCount);
+        GenerateFormula();
     }
 
     void Update() {
-        /*
-        if(generate) {
-            GenerateFormula(result, maxModifier);
-            generate = false;
-        }
-        */
     }
 
-    private void GenerateFormula(int result, int maxModifier, int operandCount) {
-        Formula formula = new Formula(result, maxModifier);
-        formula.GenerateQuestion(operandCount);
+    private void GenerateFormula() {
+        Formula formula = new Formula(result, maxModifier, operandCount);
+        formula.GenerateQuestion();
         operands = formula.operands;
         operators = formula.operators;
         Debug.Log($"{formula.question} = {formula.Result()}");

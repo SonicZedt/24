@@ -20,8 +20,8 @@ public class Deck : MonoBehaviour
     }
 
     private void GetActiveDeck() {
-        if(gameHandler.operandCount == 8) activeDeck = deckHigh;
-        else if(gameHandler.operandCount == 4) activeDeck = deckLow;
+        if(gameHandler.operandCount >= 8) activeDeck = deckHigh;
+        else if(gameHandler.operandCount < 8) activeDeck = deckLow;
     }
 
     private void SetSlotList() {
