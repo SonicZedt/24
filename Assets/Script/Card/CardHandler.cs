@@ -15,7 +15,7 @@ public class CardHandler : MonoBehaviour
         gameHandler = GetComponent<GameHandler>();
     }
 
-    void Update() {
+    void Start() {
         SetDeck();
     }
 

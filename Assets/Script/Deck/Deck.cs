@@ -13,7 +13,7 @@ public class Deck : MonoBehaviour
     
     private Transform activeDeck;
 
-    void Start() {
+    void Awake() {
         HideDeck();
         GetActiveDeck();
         SetSlotList();

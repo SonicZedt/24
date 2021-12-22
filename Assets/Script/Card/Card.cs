@@ -6,7 +6,6 @@ public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 {
     public TextMeshProUGUI valueText;
     public int value;
-    // TODO: set droppedOnBoard to true when card dragged onto board slot
     [HideInInspector] public bool droppedOnBoard, onEndDrag;
 
     private RectTransform rectTransform;

@@ -274,7 +274,7 @@ MonoBehaviour:
   camera: {fileID: 519420030}
   result: 24
   maxModifier: 50
-  operandCount: 6
+  operandCount: 4
   operands: 
   operators: []
 --- !u!4 &422122196
@@ -761,7 +761,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &609013713
 Transform:
   m_ObjectHideFlags: 0
@@ -1196,6 +1196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1242404958}
   - component: {fileID: 1242404959}
+  - component: {fileID: 1242404961}
   m_Layer: 0
   m_Name: Deck_Slot_Low_0
   m_TagString: Untagged
@@ -1203,20 +1204,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1242404958
-Transform:
+--- !u!224 &1242404958
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242404957}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.25, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 609013713}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -2.25, y: 0}
+  m_SizeDelta: {x: 1.28, y: 1.93}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &1242404959
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1268,6 +1274,14 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!222 &1242404961
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242404957}
+  m_CullTransparentMesh: 1
 --- !u!1 &1482220207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1319,7 +1333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameHandler: {fileID: 422122195}
   slotParent: {fileID: 81842773}
-  slotPrefab: {fileID: 5576509150220668512, guid: 7da26ca9dae8daa40a62c9c2b06a39dd, type: 3}
+  slotPrefab: {fileID: 5066523416173730642, guid: 7da26ca9dae8daa40a62c9c2b06a39dd, type: 3}
 --- !u!1 &1609171166
 GameObject:
   m_ObjectHideFlags: 0
