@@ -9,10 +9,11 @@ public class Board : MonoBehaviour
     [Header("Slot")]
     public Transform slotParent;
     public GameObject slotPrefab;
+    [Range(0f, 5f)] public float slotSpacing;
 
     private List<GameObject> slots = new List<GameObject>();
 
-    void Awake() {
+    void Start() {
         SetCardSlot();
     }
 
@@ -21,9 +22,13 @@ public class Board : MonoBehaviour
         float positionModifier = operandCount / 2;
 
         if(operandCount % 2 == 0) positionModifier -= .5f;
+        
+        Vector3 Position(int i) {
+            return Vector3.left * slotSpacing * (i - positionModifier);
+        }
 
         for(int i = 0; i < operandCount; i++) {
-            GameObject slot = Instantiate(slotPrefab, Vector3.left * (i - positionModifier), Quaternion.identity, slotParent);
+            GameObject slot = Instantiate(slotPrefab, Position(i), Quaternion.identity, slotParent);
             slots.Add(slot);
         }
     }

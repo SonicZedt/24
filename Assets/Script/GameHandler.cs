@@ -17,10 +17,10 @@ public class GameHandler : MonoBehaviour
 
     void Awake() {
         input = gameObject.GetComponent<Input>();
+        GenerateFormula();
     }
 
-    void Start() {
-        GenerateFormula();
+    void OnEnable() {
     }
 
     void Update() {
