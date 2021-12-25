@@ -7,10 +7,9 @@ public class Board : MonoBehaviour
     public GameHandler gameHandler;
 
     [Header("Slot")]
-    public Transform slotParent;
-    public GameObject slotPrefab;
-    [Range(0f, 5f)] public float slotSpacing;
-
+    [SerializeField] private Transform slotParent;
+    [SerializeField] private GameObject slotPrefab;
+    [SerializeField] [Range(0f, 5f)] public float slotSpacing;
     private List<GameObject> slots = new List<GameObject>();
 
     void Start() {
@@ -18,7 +17,7 @@ public class Board : MonoBehaviour
     }
 
     void SetCardSlot() {
-        int operandCount = gameHandler.operandCount;
+        int operandCount = gameHandler.OperandCount;
         float positionModifier = operandCount / 2;
 
         if(operandCount % 2 == 0) positionModifier -= .5f;

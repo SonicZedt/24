@@ -7,7 +7,7 @@ public class BoardSlot : MonoBehaviour, IDropHandler
         GameObject cardObject = eventData.pointerDrag;
 
         if(cardObject != null) {
-            cardObject.GetComponent<Card>().droppedOnBoard = true;
+            cardObject.GetComponent<Card>().DroppedOnBoard = true;
             cardObject.GetComponent<RectTransform>().position = GetComponent<RectTransform>().position;
         }
     }

@@ -7,17 +7,19 @@ public class Deck : MonoBehaviour
     public GameHandler gameHandler;
 
     [Header("Deck")]
-    public Transform slotParent;
-    public GameObject slotPrefab;
-    [Range(0f, 5f)] public float slotSpacing;
-    public List<Transform> slots = new List<Transform>();
+    [SerializeField] private Transform slotParent;
+    [SerializeField] private GameObject slotPrefab;
+    [SerializeField] [Range(0f, 5f)] private float slotSpacing;
+    private List<Transform> slots = new List<Transform>();
+
+    public List<Transform> Slots { get { return slots; }}
 
     void Awake() {
         SetSlotList();
     }
 
     private void SetSlotList() {
-        int operandCount = gameHandler.operandCount;
+        int operandCount = gameHandler.OperandCount;
         float positionModifier = operandCount / 2;
 
         if(operandCount % 2 == 0) positionModifier -= .5f;

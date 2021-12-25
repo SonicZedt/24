@@ -191,9 +191,7 @@ MonoBehaviour:
   camera: {fileID: 519420030}
   result: 24
   maxModifier: 50
-  operandCount: 4
-  operands: 
-  operators: []
+  operandCount: 6
 --- !u!4 &422122196
 Transform:
   m_ObjectHideFlags: 0
@@ -473,7 +471,6 @@ MonoBehaviour:
   slotParent: {fileID: 1244869699}
   slotPrefab: {fileID: 3228581157521883430, guid: 92e035c5a6a18b04f96cdc831d0a4423, type: 3}
   slotSpacing: 1.75
-  slots: []
 --- !u!1 &807880470
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,7 +596,6 @@ MonoBehaviour:
   gameHandler: {fileID: 422122195}
   cardPrefab: {fileID: 4706199028013299629, guid: 472d1b560f85a2440a906ed826a212dd, type: 3}
   deck: {fileID: 590045070}
-  cardList: []
 --- !u!1 &1244869698
 GameObject:
   m_ObjectHideFlags: 0
