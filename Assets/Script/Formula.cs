@@ -15,10 +15,7 @@ public class Formula
     }
     public int OperandCount {
         get { return operandCount; }
-        set {
-            if(value >= 8) this.operandCount = 8;
-            else this.operandCount = 4;
-        }
+        set { this.operandCount = value; }
     }
 
     public List<int> operands = new List<int>();

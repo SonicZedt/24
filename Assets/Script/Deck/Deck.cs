@@ -17,7 +17,6 @@ public class Deck : MonoBehaviour
     }
 
     private void SetSlotList() {
-        //activeDeck.gameObject.SetActive(true);
         int operandCount = gameHandler.operandCount;
         float positionModifier = operandCount / 2;
 
