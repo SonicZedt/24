@@ -15,7 +15,6 @@ public class CardHandler : MonoBehaviour
 
     private void SetDeck() {
         List<Transform> deckSlots = deck.Slots;
-        Debug.Log(deckSlots);
 
         void SpawnCards() {
             for(int i = 0; i < deckSlots.Count; i++) {

@@ -47,6 +47,9 @@ TagManager:
   - name: Deck
     uniqueID: 938158395
     locked: 0
+  - name: Slot
+    uniqueID: 2865410103
+    locked: 0
   - name: Card
     uniqueID: 785998843
     locked: 0
