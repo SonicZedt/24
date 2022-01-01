@@ -3,12 +3,36 @@ using UnityEngine.EventSystems;
 
 public class BoardSlot : MonoBehaviour, IDropHandler
 {
+    private GameObject cardObject;
+    private int value;
+    private bool hasCard;
+
+    public int Value { get { return value; }}
+    public bool HasCard { get { return hasCard; }}
+
+    void Update() {
+        CheckCard();
+    }
+
+    private void CheckCard() {
+        if(cardObject == null) hasCard = false;
+        else hasCard = cardObject.transform.position == transform.position;
+        
+        if(!hasCard) {
+            cardObject = null;
+            value = 0;
+        }
+    }
+
     public void OnDrop(PointerEventData eventData){
-        GameObject cardObject = eventData.pointerDrag;
+        cardObject = eventData.pointerDrag;
 
         if(cardObject != null) {
-            cardObject.GetComponent<Card>().DroppedOnBoard = true;
+            Card card = cardObject.GetComponent<Card>();
+
             cardObject.GetComponent<RectTransform>().position = GetComponent<RectTransform>().position;
+            card.DroppedOnBoard = true;
+            value = card.Value;
         }
     }
 }

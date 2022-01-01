@@ -18,6 +18,8 @@ public class Board : MonoBehaviour
     [SerializeField] private Transform operatorParent;
     [SerializeField] private GameObject operatorPrefab;
 
+    public List<GameObject> Slots { get { return slots; }}
+
     void Start() {
         SetCardSlot();
         SetOperator();

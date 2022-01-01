@@ -204,6 +204,7 @@ GameObject:
   - component: {fileID: 422122196}
   - component: {fileID: 422122197}
   - component: {fileID: 422122195}
+  - component: {fileID: 422122198}
   m_Layer: 0
   m_Name: Handler
   m_TagString: Handler
@@ -255,6 +256,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 519420030}
   position: {x: 0, y: 0}
+--- !u!114 &422122198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422122194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35668053054d91447887b74c86897c99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  board: {fileID: 537508824}
 --- !u!1 &429241301
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,7 +716,7 @@ MonoBehaviour:
   gameHandler: {fileID: 422122195}
   slotParent: {fileID: 314075761}
   slotPrefab: {fileID: 3228581157521883430, guid: 92e035c5a6a18b04f96cdc831d0a4423, type: 3}
-  slotSpacing: 1.15
+  slotSpacing: 2
 --- !u!1 &807880470
 GameObject:
   m_ObjectHideFlags: 0
