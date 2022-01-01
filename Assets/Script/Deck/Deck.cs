@@ -7,30 +7,33 @@ public class Deck : MonoBehaviour
     public GameHandler gameHandler;
 
     [Header("Deck")]
-    public Transform deckHigh;
-    public Transform deckLow;
-    public List<Transform> slot = new List<Transform>();
-    
-    private Transform activeDeck;
+    [SerializeField] private Transform slotParent;
+    [SerializeField] private GameObject slotPrefab;
+    [SerializeField] [Range(0f, 5f)] private float slotSpacing;
+    private List<Transform> slots = new List<Transform>();
+
+    public List<Transform> Slots { get { return slots; }}
 
     void Awake() {
-        HideDeck();
-        GetActiveDeck();
         SetSlotList();
     }
 
-    private void GetActiveDeck() {
-        if(gameHandler.operandCount >= 8) activeDeck = deckHigh;
-        else if(gameHandler.operandCount < 8) activeDeck = deckLow;
-    }
-
     private void SetSlotList() {
-        activeDeck.gameObject.SetActive(true);
-        foreach(Transform availableSlot in activeDeck) slot.Add(availableSlot);
-    }
+        int operandCount = gameHandler.OperandCount;
+        float positionModifier = operandCount / 2;
 
-    private void HideDeck() {
-        deckHigh.gameObject.SetActive(false);
-        deckLow.gameObject.SetActive(false);
+        if(operandCount % 2 == 0) positionModifier -= .5f;
+        
+        Vector2 Position(int i) {
+            float posX = slotSpacing * (i - positionModifier);
+            float posY = slotParent.position.y;
+
+            return new Vector2(posX, posY);
+        }
+
+        for(int i = 0; i < operandCount; i++) {
+            GameObject slot = Instantiate(slotPrefab, Position(i), Quaternion.identity, slotParent);
+            slots.Add(slot.transform);
+        }
     }
 }

@@ -4,37 +4,35 @@ using UnityEngine;
 
 public class CardHandler : MonoBehaviour
 {
-    public Transform parent;
-    public GameObject cardPrefab;
-    public Deck deck;
-    [HideInInspector] public List<GameObject> cardList = new List<GameObject>();
-
-    private GameHandler gameHandler;
-
-    void Awake() {
-        gameHandler = GetComponent<GameHandler>();
-    }
+    [SerializeField] private GameHandler gameHandler;
+    [SerializeField] private GameObject cardPrefab;
+    [SerializeField] private Deck deck;
+    private List<GameObject> cardList = new List<GameObject>();
 
     void Start() {
         SetDeck();
     }
 
     private void SetDeck() {
+        List<Transform> deckSlots = deck.Slots;
+        Debug.Log(deckSlots);
+
         void SpawnCards() {
-            for(int i = 0; i < deck.slot.Count; i++) {
-                GameObject cardInstance = Instantiate(cardPrefab, deck.slot[i].position, Quaternion.identity, parent);
+            for(int i = 0; i < deckSlots.Count; i++) {
+                GameObject cardInstance = Instantiate(cardPrefab, deckSlots[i].position, Quaternion.identity, gameObject.transform);
                 cardList.Add(cardInstance);
             }
         }
 
         void SetCardsValueAndShuffle() {
             List<Vector3> slotPosition = new List<Vector3>();
+            List<int> operands = gameHandler.Operands;
 
-            foreach(Transform slot in deck.slot) slotPosition.Add(slot.position);
+            foreach(Transform slot in deckSlots) slotPosition.Add(slot.position);
             for(int i = 0; i < cardList.Count; i++) {
                 // Set card value
                 Card card = cardList[i].GetComponent<Card>();
-                card.value = gameHandler.operands[i];
+                card.Value = operands[i];
 
                 // Move card to random deck slot position
                 int index = Random.Range(0, slotPosition.Count);
@@ -43,7 +41,7 @@ public class CardHandler : MonoBehaviour
             }
         }
 
-        if((deck.slot.Count == 0) || (cardList.Count >= deck.slot.Count)) return;
+        if((deckSlots.Count == 0) || (cardList.Count >= deckSlots.Count)) return;
 
         SpawnCards();
         SetCardsValueAndShuffle();

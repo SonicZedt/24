@@ -4,16 +4,26 @@ using TMPro;
 
 public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    public TextMeshProUGUI valueText;
-    public int value;
-    [HideInInspector] public bool droppedOnBoard, onEndDrag;
 
+    private int value;
+    private bool droppedOnBoard, onEndDrag;
+    private TextMeshProUGUI valueText;
     private RectTransform rectTransform;
     private Canvas cardCanvas;
     private CanvasGroup cardCanvasGroup;
     private Vector3 defaultPosition;
 
+    public int Value {
+        get { return value; }
+        set { this.value = value; }
+    }
+
+    public bool DroppedOnBoard {
+        set { this.droppedOnBoard = value; }
+    }
+
     void Awake() {
+        valueText = GetComponent<TextMeshProUGUI>();
         rectTransform = GetComponent<RectTransform>();
         cardCanvas = gameObject.transform.root.GetComponent<Canvas>();
         cardCanvasGroup = GetComponent<CanvasGroup>();
