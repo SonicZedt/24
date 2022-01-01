@@ -16,7 +16,7 @@ public class GameHandler : MonoBehaviour
 
     public int OperandCount { get { return operandCount; }}
     public List<int> Operands { get { return operands; }}
-    public List<string> Operators { get { return Operators; }}
+    public List<string> Operators { get { return operators; }}
 
     void Awake() {
         input = gameObject.GetComponent<Input>();
