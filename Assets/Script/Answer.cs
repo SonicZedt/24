@@ -1,32 +1,58 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Answer : MonoBehaviour
 {
     [SerializeField] private Board board;
-    private List<GameObject> slots = new List<GameObject>();
+    [SerializeField] private Button button_checkAnswer;
+    private GameHandler gameHandler;
+    private List<GameObject> availableSlot = new List<GameObject>();
+
+    void Awake() {
+        gameHandler = GetComponent<GameHandler>();
+    }
 
     void Start() {
-        slots = board.Slots;
+        availableSlot = board.Slots;
     }
 
     void Update() {
-        Check();
+        ButtonInteraction();
     }
 
-    private void Check() {
-        string hasCard = "";
-        string cardValue = "";
-        
-        for(int i = 0; i < slots.Count; i++) {
-            BoardSlot slot = slots[i].GetComponent<BoardSlot>();
+    private void ButtonInteraction() {
+        button_checkAnswer.interactable = AnswerSet() ? true : false;
+    }
 
-            hasCard = $"{hasCard}, {slot.HasCard}";
-            cardValue = $"{cardValue}, {slot.Value}";
+    private bool AnswerSet() {
+        for(int i = 0; i < availableSlot.Count; i++) {
+            BoardSlot slot = availableSlot[i].GetComponent<BoardSlot>();
+
+            if(!slot.HasCard) return false;
         }
 
-        Debug.Log(hasCard);
-        Debug.Log(cardValue);
+        return true;
+    }
+
+    private string BuildAnswer() {
+        StringBuilder answerBuilder = new StringBuilder();
+        List<string> operators = gameHandler.Operators;
+        
+        for(int i = 0; i < availableSlot.Count; i++) {
+            BoardSlot slot = availableSlot[i].GetComponent<BoardSlot>();
+
+            answerBuilder.Append(slot.Value);
+            if(i < operators.Count) answerBuilder.Append(operators[i]);
+        }
+
+        return answerBuilder.ToString();
+    }
+
+    public void Check() {
+        string answer = BuildAnswer();
+
+        Debug.Log(answer);
     }
 }
