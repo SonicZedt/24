@@ -15,9 +15,8 @@ public class BoardSlot : MonoBehaviour, IDropHandler
     }
 
     private void CheckCard() {
-        if(cardObject == null) hasCard = false;
-        else hasCard = cardObject.transform.position == transform.position;
-        
+        hasCard = cardObject == null ? false : cardObject.transform.position == transform.position;
+
         if(!hasCard) {
             cardObject = null;
             value = 0;
