@@ -7,13 +7,11 @@ public class Answer : MonoBehaviour
     [SerializeField] private Board board;
     private List<GameObject> slots = new List<GameObject>();
 
-    void Start()
-    {
+    void Start() {
         slots = board.Slots;
     }
 
-    void Update()
-    {
+    void Update() {
         Check();
     }
 
@@ -24,8 +22,8 @@ public class Answer : MonoBehaviour
         for(int i = 0; i < slots.Count; i++) {
             BoardSlot slot = slots[i].GetComponent<BoardSlot>();
 
-            hasCard = $"{slot.HasCard}, {hasCard}";
-            cardValue = $"{slot.Value}, {cardValue}";
+            hasCard = $"{hasCard}, {slot.HasCard}";
+            cardValue = $"{cardValue}, {slot.Value}";
         }
 
         Debug.Log(hasCard);
