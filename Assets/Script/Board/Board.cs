@@ -26,7 +26,7 @@ public class Board : MonoBehaviour
     }
 
     Vector3 SpawnPosition(int index, float modifier) {
-        return Vector3.left * spacing * (index - modifier);
+        return Vector3.right * spacing * (index - modifier);
     }
 
     void SetCardSlot() {
