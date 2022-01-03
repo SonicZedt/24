@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,9 @@ public class Answer : MonoBehaviour
     private GameHandler gameHandler;
     private List<GameObject> availableSlot = new List<GameObject>();
     private List<Transform> deckSlot = new List<Transform>();
+    private string answer;
+
+    public string Get { get { return answer; }}
 
     void Awake() {
         gameHandler = GetComponent<GameHandler>();
@@ -41,12 +45,6 @@ public class Answer : MonoBehaviour
         return answerBuilder.ToString();
     }
 
-    public void Check() {
-        string answer = BuildAnswer();
-
-        Debug.Log(answer);
-    }
-
     private bool AnswerSet() {
         for(int i = 0; i < availableSlot.Count; i++) {
             BoardSlot slot = availableSlot[i].GetComponent<BoardSlot>();
@@ -54,6 +52,7 @@ public class Answer : MonoBehaviour
             if(!slot.HasCard) return false;
         }
 
+        answer = BuildAnswer();
         return true;
     }
 

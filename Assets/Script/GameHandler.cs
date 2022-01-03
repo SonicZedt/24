@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 public class GameHandler : MonoBehaviour
@@ -10,6 +11,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private int result;
     [SerializeField] private int maxModifier;
     [SerializeField] private int operandCount;
+    private Answer answer;
     private List<int> operands = new List<int>();
     private List<string> operators = new List<string>();
     private Input input;
@@ -19,7 +21,9 @@ public class GameHandler : MonoBehaviour
     public List<string> Operators { get { return operators; }}
 
     void Awake() {
-        input = gameObject.GetComponent<Input>();
+        input = GetComponent<Input>();
+        answer = GetComponent<Answer>();
+
         GenerateFormula();
     }
 
@@ -35,5 +39,12 @@ public class GameHandler : MonoBehaviour
 
         Debug.Log($"{formula.question} = {formula.Result()}");
         Debug.Log("=======================");
+    }
+
+    public void CheckAnswer() {
+        DataTable dt = new DataTable();
+
+        int result = (int)dt.Compute(answer.Get, " ");
+        Debug.Log(result);
     }
 }
