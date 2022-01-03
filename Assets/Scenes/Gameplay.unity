@@ -216,7 +216,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &164719177
 Canvas:
   m_ObjectHideFlags: 0
@@ -369,7 +369,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   board: {fileID: 537508824}
-  button_checkAnswer: {fileID: 1230403371}
+  deck: {fileID: 550626175}
+  button_Answer: {fileID: 1230403371}
 --- !u!1 &429241301
 GameObject:
   m_ObjectHideFlags: 0
@@ -940,12 +941,12 @@ GameObject:
   - component: {fileID: 1230403372}
   - component: {fileID: 1230403371}
   m_Layer: 5
-  m_Name: Check Answer
+  m_Name: Button_Answer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1230403370
 RectTransform:
   m_ObjectHideFlags: 0
@@ -963,8 +964,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000038146973, y: -210}
-  m_SizeDelta: {x: 187.18, y: 62.320007}
+  m_AnchoredPosition: {x: 531, y: -234}
+  m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1230403371
 MonoBehaviour:

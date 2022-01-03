@@ -20,7 +20,7 @@ public class Board : MonoBehaviour
 
     public List<GameObject> Slots { get { return slots; }}
 
-    void Start() {
+    void Awake() {
         SetCardSlot();
         SetOperator();
     }

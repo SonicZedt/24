@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class Answer : MonoBehaviour
 {
     [SerializeField] private Board board;
-    [SerializeField] private Button button_checkAnswer;
+    [SerializeField] private Deck deck;
+    [SerializeField] private Button button_Answer;
     private GameHandler gameHandler;
     private List<GameObject> availableSlot = new List<GameObject>();
+    private List<Transform> deckSlot = new List<Transform>();
 
     void Awake() {
         gameHandler = GetComponent<GameHandler>();
@@ -16,24 +18,13 @@ public class Answer : MonoBehaviour
 
     void Start() {
         availableSlot = board.Slots;
+        deckSlot = deck.Slots;
+        
+        SetAnswerButton(button_Answer);
     }
 
     void Update() {
         ButtonInteraction();
-    }
-
-    private void ButtonInteraction() {
-        button_checkAnswer.interactable = AnswerSet() ? true : false;
-    }
-
-    private bool AnswerSet() {
-        for(int i = 0; i < availableSlot.Count; i++) {
-            BoardSlot slot = availableSlot[i].GetComponent<BoardSlot>();
-
-            if(!slot.HasCard) return false;
-        }
-
-        return true;
     }
 
     private string BuildAnswer() {
@@ -54,5 +45,29 @@ public class Answer : MonoBehaviour
         string answer = BuildAnswer();
 
         Debug.Log(answer);
+    }
+
+    private bool AnswerSet() {
+        for(int i = 0; i < availableSlot.Count; i++) {
+            BoardSlot slot = availableSlot[i].GetComponent<BoardSlot>();
+
+            if(!slot.HasCard) return false;
+        }
+
+        return true;
+    }
+
+    private void SetAnswerButton(Button button) {
+        button.gameObject.SetActive(true);
+
+        // Set button position
+        Vector3 buttonPosition = deckSlot[deckSlot.Count - 1].position;
+
+        buttonPosition.x += deck.Spacing;
+        button.transform.position = buttonPosition;
+    }
+
+    private void ButtonInteraction() {
+        button_Answer.interactable = AnswerSet();
     }
 }
