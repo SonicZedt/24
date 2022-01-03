@@ -13,6 +13,7 @@ public class Deck : MonoBehaviour
     private List<Transform> slots = new List<Transform>();
 
     public List<Transform> Slots { get { return slots; }}
+    public float Spacing { get { return slotSpacing; }}
 
     void Awake() {
         SetSlotList();

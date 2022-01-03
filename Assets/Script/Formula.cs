@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -6,29 +5,30 @@ using UnityEngine;
 
 public class Formula
 {
+    public List<int> operands = new List<int>();
+    public List<string> operators = new List<string>();
+    public string question;
+    
+    private int mark, maxModifier, numberTemp, operandCount;
+
     public int MaxModifier { 
         get { return maxModifier; }
         set {
-        if(value >= result) maxModifier = this.result / 2;
+        if(value >= mark) maxModifier = this.mark / 2;
         else maxModifier = value;
         }
     }
+
     public int OperandCount {
         get { return operandCount; }
         set { this.operandCount = value; }
     }
 
-    public List<int> operands = new List<int>();
-    public List<string> operators = new List<string>();
-    public string question;
-    
-    private int result, maxModifier, numberTemp, operandCount;
-
-    public Formula(int result, int maxModifier, int operandCount) {
-        this.result = result;
+    public Formula(int mark, int maxModifier, int operandCount) {
+        this.mark = mark;
         MaxModifier = maxModifier;
         OperandCount = operandCount;
-        this.numberTemp = result;
+        this.numberTemp = mark;
     }
 
     public int Result(string formula = null) {
@@ -53,7 +53,7 @@ public class Formula
         }
 
         void Fix() {
-            int gap = result - numberTemp;
+            int gap = mark - numberTemp;
             Debug.Log($"gap: {gap} | opr[0] {operands[0]}");
             
             // FIXME: * as first operator causes result mismatch.
@@ -64,7 +64,7 @@ public class Formula
                     Debug.Log("Fix action: B");
                     break;
                 default:
-                    if(operands[0] < result) operands[0] += gap;
+                    if(operands[0] < mark) operands[0] += gap;
                     else operands[0] -= gap;
                     Debug.Log("Fix action: C");
                     break;
@@ -85,8 +85,8 @@ public class Formula
             }
             
             question = stringBuilder.ToString();
-            Debug.Log("Q: " + question);
-            if(Result() != result) Fix();
+            //Debug.Log("Q: " + question);
+            //if(Result() != mark) Fix();
         }
 
         #region Operator

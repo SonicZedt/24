@@ -18,13 +18,15 @@ public class Board : MonoBehaviour
     [SerializeField] private Transform operatorParent;
     [SerializeField] private GameObject operatorPrefab;
 
-    void Start() {
+    public List<GameObject> Slots { get { return slots; }}
+
+    void Awake() {
         SetCardSlot();
         SetOperator();
     }
 
     Vector3 SpawnPosition(int index, float modifier) {
-        return Vector3.left * spacing * (index - modifier);
+        return Vector3.right * spacing * (index - modifier);
     }
 
     void SetCardSlot() {

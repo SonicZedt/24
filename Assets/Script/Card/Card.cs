@@ -19,6 +19,7 @@ public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
     }
 
     public bool DroppedOnBoard {
+        get { return droppedOnBoard; }
         set { this.droppedOnBoard = value; }
     }
 
