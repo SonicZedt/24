@@ -6,16 +6,33 @@ using UnityEngine;
 public class GameHandler : MonoBehaviour
 {
     [SerializeField] private new CameraController camera;
-    
+    private Input input;
+
     [Header("Formula")]
-    [SerializeField] private int mark;
-    [SerializeField] private int maxModifier;
     [SerializeField] private int operandCount;
+    [SerializeField] private int maxModifier;
+    [SerializeField] [HideInInspector] private bool randomMark;
+    [SerializeField] [HideInInspector] private int mark, minMark, maxMark;
     private Answer answer;
     private List<int> operands = new List<int>();
     private List<string> operators = new List<string>();
-    private Input input;
 
+    public bool RandomMark {
+        get { return randomMark; }
+        set { this.randomMark = value; }
+    }
+    public int Mark {
+        get { return mark; }
+        set { this.mark = value; }
+    }
+    public int MinMark { 
+        get { return minMark; }
+        set { this.minMark = value; }
+        }
+    public int MaxMark { 
+        get { return maxMark; }
+        set { this.maxMark = value; }
+        }
     public int OperandCount { get { return operandCount; }}
     public List<int> Operands { get { return operands; }}
     public List<string> Operators { get { return operators; }}
@@ -25,9 +42,6 @@ public class GameHandler : MonoBehaviour
         answer = GetComponent<Answer>();
 
         GenerateFormula();
-    }
-
-    void Update() {
     }
 
     private void GenerateFormula() {
