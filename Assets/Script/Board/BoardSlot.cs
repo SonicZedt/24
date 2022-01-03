@@ -23,7 +23,8 @@ public class BoardSlot : MonoBehaviour, IDropHandler
         }
     }
 
-    public void OnDrop(PointerEventData eventData){
+    public void OnDrop(PointerEventData eventData) {
+        // TODO: Swappable on board card
         cardObject = eventData.pointerDrag;
 
         if(cardObject != null) {
