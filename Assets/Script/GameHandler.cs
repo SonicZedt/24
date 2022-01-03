@@ -8,7 +8,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private new CameraController camera;
     
     [Header("Formula")]
-    [SerializeField] private int result;
+    [SerializeField] private int mark;
     [SerializeField] private int maxModifier;
     [SerializeField] private int operandCount;
     private Answer answer;
@@ -31,7 +31,7 @@ public class GameHandler : MonoBehaviour
     }
 
     private void GenerateFormula() {
-        Formula formula = new Formula(result, maxModifier, operandCount);
+        Formula formula = new Formula(mark, maxModifier, operandCount);
 
         formula.GenerateQuestion();
         operands = formula.operands;
@@ -42,6 +42,7 @@ public class GameHandler : MonoBehaviour
     }
 
     public void CheckAnswer() {
+        // TODO: show pop up if answer is true
         DataTable dt = new DataTable();
 
         int result = (int)dt.Compute(answer.Get, " ");
