@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -6,6 +5,12 @@ using UnityEngine;
 
 public class Formula
 {
+    public List<int> operands = new List<int>();
+    public List<string> operators = new List<string>();
+    public string question;
+    
+    private int result, maxModifier, numberTemp, operandCount;
+
     public int MaxModifier { 
         get { return maxModifier; }
         set {
@@ -13,16 +18,11 @@ public class Formula
         else maxModifier = value;
         }
     }
+
     public int OperandCount {
         get { return operandCount; }
         set { this.operandCount = value; }
     }
-
-    public List<int> operands = new List<int>();
-    public List<string> operators = new List<string>();
-    public string question;
-    
-    private int result, maxModifier, numberTemp, operandCount;
 
     public Formula(int result, int maxModifier, int operandCount) {
         this.result = result;
