@@ -6,17 +6,39 @@ using UnityEngine;
 public class GameHandler : MonoBehaviour
 {
     [SerializeField] private new CameraController camera;
-    
-    [Header("Formula")]
-    [SerializeField] private int mark;
-    [SerializeField] private int maxModifier;
-    [SerializeField] private int operandCount;
-    private Answer answer;
-    private List<int> operands = new List<int>();
-    private List<string> operators = new List<string>();
     private Input input;
 
-    public int OperandCount { get { return operandCount; }}
+    [HideInInspector] [SerializeField] private int operandCount;
+    [HideInInspector] [SerializeField] private int maxModifier, mark, minMark, maxMark;
+    [HideInInspector] [SerializeField] private bool randomMark;
+    private List<int> operands = new List<int>();
+    private List<string> operators = new List<string>();
+    private Answer answer;
+
+    public bool RandomMark {
+        get { return randomMark; }
+        set { this.randomMark = value; }
+        }
+    public int Mark {
+        get { return mark; }
+        set { this.mark = value; }
+        }
+    public int MinMark { 
+        get { return minMark; }
+        set { this.minMark = value; }
+        }
+    public int MaxMark { 
+        get { return maxMark; }
+        set { this.maxMark = value; }
+        }
+    public int OperandCount {
+        get { return operandCount; }
+        set { this.operandCount = value; }
+        }
+    public int MaxModifier {
+        get { return maxModifier; }
+        set { this.maxModifier = value; }
+        }
     public List<int> Operands { get { return operands; }}
     public List<string> Operators { get { return operators; }}
 
@@ -27,10 +49,12 @@ public class GameHandler : MonoBehaviour
         GenerateFormula();
     }
 
-    void Update() {
-    }
-
     private void GenerateFormula() {
+        int RandomMark() {
+            return (int)Random.Range(minMark, maxMark++);
+        }
+
+        if(randomMark) mark = RandomMark();
         Formula formula = new Formula(mark, maxModifier, operandCount);
 
         formula.GenerateQuestion();
