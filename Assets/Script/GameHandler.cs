@@ -45,6 +45,11 @@ public class GameHandler : MonoBehaviour
     }
 
     private void GenerateFormula() {
+        int RandomMark() {
+            return (int)Random.Range(minMark, maxMark);
+        }
+
+        if(randomMark) mark = RandomMark();
         Formula formula = new Formula(mark, maxModifier, operandCount);
 
         formula.GenerateQuestion();
