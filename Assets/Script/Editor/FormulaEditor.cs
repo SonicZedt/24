@@ -1,19 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(GameHandler))]
-public class FormulaMarkEditor : Editor
+public class FormulaEditor : Editor
 {
     public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+        base.OnInspectorGUI();
 
         GameHandler gameHandler = (GameHandler)target;
+        
+        EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField("Formula", EditorStyles.boldLabel);
         gameHandler.RandomMark = EditorGUILayout.Toggle("Random Mark", gameHandler.RandomMark);
         
-        void RandomMarkProperties(bool random) {
-            EditorGUI.indentLevel++;
+        void SetMarkProperties(bool random) {
             GUI.enabled = !random;
                 gameHandler.Mark = EditorGUILayout.IntField("Constant Mark", gameHandler.Mark, GUILayout.Width(175));
             GUI.enabled = random;
@@ -22,6 +22,18 @@ public class FormulaMarkEditor : Editor
             GUI.enabled = !random;
         }
 
-        RandomMarkProperties(gameHandler.RandomMark);
+        void SetOperandCount() {
+            gameHandler.OperandCount = EditorGUILayout.IntField("Operand Count", gameHandler.OperandCount);
+        }
+
+        void SetMaxModifier() {
+            gameHandler.MaxModifier = EditorGUILayout.IntField("Max Modifier", gameHandler.MaxModifier);
+        }
+
+        EditorGUI.indentLevel++;
+            SetMarkProperties(gameHandler.RandomMark);
+        EditorGUI.indentLevel--;
+        SetOperandCount();
+        SetMaxModifier();
     }
 }

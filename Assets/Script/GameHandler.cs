@@ -8,23 +8,21 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private new CameraController camera;
     private Input input;
 
-    [Header("Formula")]
-    [SerializeField] private int operandCount;
-    [SerializeField] private int maxModifier;
-    [SerializeField] [HideInInspector] private bool randomMark;
-    [SerializeField] [HideInInspector] private int mark, minMark, maxMark;
-    private Answer answer;
+    [HideInInspector] [SerializeField] private int operandCount;
+    [HideInInspector] [SerializeField] private int maxModifier, mark, minMark, maxMark;
+    [HideInInspector] [SerializeField] private bool randomMark;
     private List<int> operands = new List<int>();
     private List<string> operators = new List<string>();
+    private Answer answer;
 
     public bool RandomMark {
         get { return randomMark; }
         set { this.randomMark = value; }
-    }
+        }
     public int Mark {
         get { return mark; }
         set { this.mark = value; }
-    }
+        }
     public int MinMark { 
         get { return minMark; }
         set { this.minMark = value; }
@@ -33,7 +31,14 @@ public class GameHandler : MonoBehaviour
         get { return maxMark; }
         set { this.maxMark = value; }
         }
-    public int OperandCount { get { return operandCount; }}
+    public int OperandCount {
+        get { return operandCount; }
+        set { this.operandCount = value; }
+        }
+    public int MaxModifier {
+        get { return maxModifier; }
+        set { this.maxModifier = value; }
+        }
     public List<int> Operands { get { return operands; }}
     public List<string> Operators { get { return operators; }}
 
@@ -46,7 +51,7 @@ public class GameHandler : MonoBehaviour
 
     private void GenerateFormula() {
         int RandomMark() {
-            return (int)Random.Range(minMark, maxMark);
+            return (int)Random.Range(minMark, maxMark++);
         }
 
         if(randomMark) mark = RandomMark();
