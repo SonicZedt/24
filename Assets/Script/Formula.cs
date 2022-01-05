@@ -13,7 +13,7 @@ public class Formula
 
     public int MaxModifier { 
         get { return maxModifier; }
-        set { this.maxModifier = value >= mark ? mark : value; }
+        set { this.maxModifier = (value >= mark) | (value == 0) ? mark : value; }
         }
     public int OperandCount {
         get { return operandCount; }
@@ -36,16 +36,8 @@ public class Formula
 
     public string GenerateQuestion() {
         int RandomNumber(List<int> list = null) {
-            int number = 0;
-
-            if(list != null) {
-                int index = Random.Range(0, list.Count - 1);
-                number = list[index];
-            }
-
-            if(maxModifier == 0) number = 0;
-            else number = Random.Range(1, maxModifier);
-            return number;
+            // Get random number from list if list isn't null
+            return list == null ? Random.Range(1, maxModifier) : list[Random.Range(0, list.Count - 1)];
         }
 
         void Fix() {
@@ -124,6 +116,10 @@ public class Formula
 
             return n;
         }
+
+        int Divider() {
+            return 1;
+        }
         #endregion
 
         for(int i = 0; i < OperandCount - 1; i++) {
@@ -144,11 +140,10 @@ public class Formula
                     opr = "*";
                     opd = Multiplicator();
                     break;
-                /* TODO: complete arithmatic
                 case 3:
                     opr = "/";
+                    opd = Divider();
                     break;
-                */
             }
 
             operands.Add(opd);
