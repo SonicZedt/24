@@ -116,6 +116,8 @@ public class Formula
         }
 
         int Divider() {
+            // TODO: Create a list of dividers (n) that would makes operands[i]/n = integer
+
             int n = RandomNumber();
             int mul = numberTemp * n;
             numberTemp = mul;
