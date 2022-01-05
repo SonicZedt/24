@@ -19,7 +19,7 @@ public class FormulaEditor : Editor
             GUI.enabled = random;
                 gameHandler.MinMark = EditorGUILayout.IntField("Min", gameHandler.MinMark, GUILayout.Width(175));
                 gameHandler.MaxMark = EditorGUILayout.IntField("Max", gameHandler.MaxMark, GUILayout.Width(175));
-            GUI.enabled = !random;
+            GUI.enabled = true;
         }
 
         void SetOperandCount() {
