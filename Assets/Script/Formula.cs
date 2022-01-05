@@ -13,16 +13,12 @@ public class Formula
 
     public int MaxModifier { 
         get { return maxModifier; }
-        set {
-        if(value >= mark) maxModifier = this.mark / 2;
-        else maxModifier = value;
+        set { this.maxModifier = value >= mark ? mark : value; }
         }
-    }
-
     public int OperandCount {
         get { return operandCount; }
         set { this.operandCount = value; }
-    }
+        }
 
     public Formula(int mark, int maxModifier, int operandCount) {
         this.mark = mark;
@@ -34,11 +30,11 @@ public class Formula
     public int Result(string formula = null) {
         DataTable dt = new DataTable();
 
-        if(formula == null) formula = question;
+        formula ??= question;
         return (int)dt.Compute(formula, " ");
     }
 
-    public void GenerateQuestion() {
+    public string GenerateQuestion() {
         int RandomNumber(List<int> list = null) {
             int number = 0;
 
@@ -106,7 +102,7 @@ public class Formula
             return n;
         }
 
-        int Multificator() {
+        int Multiplicator() {
             List<int> Factors(int number) {
                 List<int> factors = new List<int>();
                 int number_max = (int)Mathf.Sqrt(number);
@@ -133,7 +129,7 @@ public class Formula
         for(int i = 0; i < OperandCount - 1; i++) {
             string opr = null;
             int opd = 0;
-            int oprSelector = Random.Range(0, 2);
+            int oprSelector = Random.Range(0, 3);
 
             switch(oprSelector) {
                 case 0:
@@ -144,11 +140,11 @@ public class Formula
                     opr = "-";
                     opd = Subtractor();
                     break;
-                /* TODO: complete arithmatic
                 case 2:
                     opr = "*";
-                    opd = Multificator();
+                    opd = Multiplicator();
                     break;
+                /* TODO: complete arithmatic
                 case 3:
                     opr = "/";
                     break;
@@ -163,5 +159,7 @@ public class Formula
         operands.Reverse();
         operators.Reverse();
         Build();
+
+        return question;
     }
 }

@@ -57,11 +57,11 @@ public class GameHandler : MonoBehaviour
         if(randomMark) mark = RandomMark();
         Formula formula = new Formula(mark, maxModifier, operandCount);
 
-        formula.GenerateQuestion();
+        string question = formula.GenerateQuestion();
         operands = formula.operands;
         operators = formula.operators;
 
-        Debug.Log($"{formula.question} = {formula.Result()}");
+        Debug.Log($"{question} = {formula.Result()}");
         Debug.Log("=======================");
     }
 
