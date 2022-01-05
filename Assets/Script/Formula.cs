@@ -27,17 +27,17 @@ public class Formula
         this.numberTemp = mark;
     }
 
-    public int Result(string formula = null) {
+    public object Result(string formula = null) {
         DataTable dt = new DataTable();
 
         formula ??= question;
-        return (int)dt.Compute(formula, " ");
+        return dt.Compute(formula, " ");
     }
 
     public string GenerateQuestion() {
         int RandomNumber(List<int> list = null) {
             // Get random number from list if list isn't null
-            return list == null ? Random.Range(1, maxModifier) : list[Random.Range(0, list.Count - 1)];
+            return list == null ? Random.Range(0, maxModifier) : list[Random.Range(0, list.Count - 1)];
         }
 
         void Fix() {
@@ -67,9 +67,7 @@ public class Formula
 
             for(int i = 0; i < operands.Count; i++) {
                 stringBuilder.Append(operands[i]);
-                
-                if(i >= operators.Count) break;
-                stringBuilder.Append(operators[i]);
+                if(i < operators.Count) stringBuilder.Append(operators[i]);
             }
             
             question = stringBuilder.ToString();
@@ -118,14 +116,18 @@ public class Formula
         }
 
         int Divider() {
-            return 1;
+            int n = RandomNumber();
+            int mul = numberTemp * n;
+            numberTemp = mul;
+
+            return n;
         }
         #endregion
 
         for(int i = 0; i < OperandCount - 1; i++) {
             string opr = null;
             int opd = 0;
-            int oprSelector = Random.Range(0, 3);
+            int oprSelector = Random.Range(0, 4);
 
             switch(oprSelector) {
                 case 0:
@@ -150,6 +152,7 @@ public class Formula
             operators.Add(opr);
         }
 
+        // FIXME: numberTemp (first operand) sometimes too big, result should be in int
         operands.Add(numberTemp);
         operands.Reverse();
         operators.Reverse();
