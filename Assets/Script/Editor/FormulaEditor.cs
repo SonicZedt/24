@@ -11,14 +11,19 @@ public class FormulaEditor : Editor
         
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("Formula", EditorStyles.boldLabel);
-        gameHandler.RandomMark = EditorGUILayout.Toggle("Random Mark", gameHandler.RandomMark);
         
         void SetMarkProperties(bool random) {
             GUI.enabled = !random;
-                gameHandler.Mark = EditorGUILayout.IntField("Constant Mark", gameHandler.Mark, GUILayout.Width(175));
+            gameHandler.Mark = EditorGUILayout.IntField("Constant Mark", gameHandler.Mark, GUILayout.Width(175));
+        
+            GUI.enabled = true;
+            gameHandler.RandomMark = EditorGUILayout.Toggle("Random Mark", gameHandler.RandomMark);
+
             GUI.enabled = random;
+            EditorGUI.indentLevel++;
                 gameHandler.MinMark = EditorGUILayout.IntField("Min", gameHandler.MinMark, GUILayout.Width(175));
                 gameHandler.MaxMark = EditorGUILayout.IntField("Max", gameHandler.MaxMark, GUILayout.Width(175));
+            EditorGUI.indentLevel--;
             GUI.enabled = true;
         }
 
@@ -30,9 +35,7 @@ public class FormulaEditor : Editor
             gameHandler.MaxModifier = EditorGUILayout.IntField("Max Modifier", gameHandler.MaxModifier);
         }
 
-        EditorGUI.indentLevel++;
-            SetMarkProperties(gameHandler.RandomMark);
-        EditorGUI.indentLevel--;
+        SetMarkProperties(gameHandler.RandomMark);
         SetOperandCount();
         SetMaxModifier();
     }
