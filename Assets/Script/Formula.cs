@@ -116,9 +116,30 @@ public class Formula
         }
 
         int Divider() {
-            // TODO: Create a list of dividers (n) that would makes operands[i]/n = integer
+            List<int> Divisors(int dividend) {
+                List<int> divisors = new List<int>();
+                float dividendSQRT = Mathf.Sqrt(dividend);
+                
+                if(dividend <= 0) {
+                    divisors.Add(1);
+                    
+                    return divisors;
+                }
 
-            int n = RandomNumber();
+                Debug.Log($"{dividend} sqrt = {dividendSQRT}");
+                for(int i = 1; i <= dividendSQRT; i++) {
+                    if((dividend / i) > maxModifier) break;
+                    else if(dividend % i != 0) continue;
+
+                    divisors.Add(i);
+                    if(i != (dividend / i)) divisors.Add(dividend / i);
+                }
+
+                foreach(int div in divisors) Debug.Log(div);
+                return divisors;
+            }
+
+            int n = RandomNumber(Divisors(numberTemp));
             int mul = numberTemp * n;
             numberTemp = mul;
 
@@ -154,7 +175,9 @@ public class Formula
             operators.Add(opr);
         }
 
-        // FIXME: numberTemp (first operand) sometimes too big, result should be in int
+        // FIXME: numberTemp (first operand) sometimes too big
+        //if(numberTemp > maxModifier) numberTemp = maxModifier;
+
         operands.Add(numberTemp);
         operands.Reverse();
         operators.Reverse();
