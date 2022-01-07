@@ -62,8 +62,6 @@ public class Formula
             }
             
             question = stringBuilder.ToString();
-            //Debug.Log("Q: " + question);
-            //if(Result() != mark) Fix();
         }
 
         #region Operator
@@ -135,13 +133,24 @@ public class Formula
             return n;
         }
         #endregion
+        
+        int OperatorSelector() { // Retunr operator index (+, -, *, /)
+            // FIXME: Adder and multiplicator combination causes index out of range 
+            int operatorIndex = Random.Range(0, 4);
+
+            while(operatorsToggle[operatorIndex] == false) {
+                operatorIndex = Random.Range(0, 4);
+            }
+
+            return operatorIndex;
+        }
 
         for(int i = 0; i < operandCount - 1; i++) {
             string opr = null;
             int opd = 0;
-            int oprSelector = Random.Range(0, 4);
+            int operatorSelector = OperatorSelector();
 
-            switch(oprSelector) {
+            switch(operatorSelector) {
                 case 0:
                     opr = "+";
                     opd = Adder();
