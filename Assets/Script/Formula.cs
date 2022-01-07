@@ -5,24 +5,22 @@ using UnityEngine;
 
 public class Formula
 {
-    public List<int> operands = new List<int>();
-    public List<string> operators = new List<string>();
-    public string question;
-    
+    private List<int> operands = new List<int>();
+    private List<string> operators = new List<string>();
+    private string question;
     private int mark, maxModifier, numberTemp, operandCount;
 
     public int MaxModifier { 
         get { return maxModifier; }
-        set {
-        if(value >= mark) maxModifier = this.mark / 2;
-        else maxModifier = value;
+        set { this.maxModifier = (value >= mark) | (value == 0) ? mark : value; }
         }
-    }
-
     public int OperandCount {
         get { return operandCount; }
         set { this.operandCount = value; }
-    }
+        }
+    public List<int> Operands { get { return operands; }}
+    public List<string> Operators { get { return operators; }}
+    public string Question { get { return question; }}
 
     public Formula(int mark, int maxModifier, int operandCount) {
         this.mark = mark;
@@ -31,25 +29,17 @@ public class Formula
         this.numberTemp = mark;
     }
 
-    public int Result(string formula = null) {
+    public object Result(string formula = null) {
         DataTable dt = new DataTable();
 
-        if(formula == null) formula = question;
-        return (int)dt.Compute(formula, " ");
+        formula ??= question;
+        return dt.Compute(formula, " ");
     }
 
-    public void GenerateQuestion() {
+    public string GenerateQuestion() {
         int RandomNumber(List<int> list = null) {
-            int number = 0;
-
-            if(list != null) {
-                int index = Random.Range(0, list.Count - 1);
-                number = list[index];
-            }
-
-            if(maxModifier == 0) number = 0;
-            else number = Random.Range(1, maxModifier);
-            return number;
+            // Get random number from list if list isn't null
+            return list == null ? Random.Range(0, maxModifier) : list[(int)Random.Range(0, list.Count - 1)];
         }
 
         void Fix() {
@@ -79,9 +69,7 @@ public class Formula
 
             for(int i = 0; i < operands.Count; i++) {
                 stringBuilder.Append(operands[i]);
-                
-                if(i >= operators.Count) break;
-                stringBuilder.Append(operators[i]);
+                if(i < operators.Count) stringBuilder.Append(operators[i]);
             }
             
             question = stringBuilder.ToString();
@@ -106,7 +94,7 @@ public class Formula
             return n;
         }
 
-        int Multificator() {
+        int Multiplicator() {
             List<int> Factors(int number) {
                 List<int> factors = new List<int>();
                 int number_max = (int)Mathf.Sqrt(number);
@@ -128,12 +116,44 @@ public class Formula
 
             return n;
         }
+
+        int Divider() {
+            List<int> Divisors(int dividend) {
+                List<int> divisors = new List<int>();
+                float dividendSQRT = Mathf.Sqrt(dividend);
+                
+                if((dividend <= 0) || (dividend > maxModifier)) {
+                    divisors.Add(1);
+                    
+                    return divisors;
+                }
+
+                Debug.Log($"{dividend} sqrt = {dividendSQRT}");
+                for(int i = 1; i <= dividendSQRT; i++) {
+                    if(dividend % i != 0) continue;
+
+                    divisors.Add(i);
+                    if(i != (dividend / i)) divisors.Add(dividend / i);
+                }
+
+                return divisors;
+            }
+
+            List<int> divs = Divisors(numberTemp);
+            Debug.Log(divs.Count);
+
+            int n = RandomNumber(divs);
+            int mul = numberTemp * n;
+            numberTemp = mul;
+
+            return n;
+        }
         #endregion
 
         for(int i = 0; i < OperandCount - 1; i++) {
             string opr = null;
             int opd = 0;
-            int oprSelector = Random.Range(0, 2);
+            int oprSelector = Random.Range(2, 4);
 
             switch(oprSelector) {
                 case 0:
@@ -144,24 +164,28 @@ public class Formula
                     opr = "-";
                     opd = Subtractor();
                     break;
-                /* TODO: complete arithmatic
                 case 2:
                     opr = "*";
-                    opd = Multificator();
+                    opd = Multiplicator();
                     break;
                 case 3:
                     opr = "/";
+                    opd = Divider();
                     break;
-                */
             }
 
             operands.Add(opd);
             operators.Add(opr);
         }
 
+        // FIXME: numberTemp (first operand) sometimes too big
+        //if(numberTemp > maxModifier) numberTemp = maxModifier;
+
         operands.Add(numberTemp);
         operands.Reverse();
         operators.Reverse();
         Build();
+
+        return question;
     }
 }

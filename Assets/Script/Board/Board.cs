@@ -49,7 +49,12 @@ public class Board : MonoBehaviour
 
         for(int i = 0; i < operators.Count; i++) {
             GameObject opr = Instantiate(operatorPrefab, SpawnPosition(i, positionModifier), Quaternion.identity, operatorParent);
-            opr.GetComponent<Operator>().Type = operators[i];
+            string operatorSymbol = operators[i];
+
+            if(operatorSymbol == "*") operatorSymbol = "×";
+            else if(operatorSymbol == "/") operatorSymbol = "÷";
+
+            opr.GetComponent<Operator>().Type = operatorSymbol;
         }
     }
 }
