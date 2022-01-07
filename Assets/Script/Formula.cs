@@ -52,27 +52,6 @@ public class Formula
             return list == null ? Random.Range(0, maxModifier) : list[(int)Random.Range(0, list.Count - 1)];
         }
 
-        void Fix() {
-            int gap = mark - numberTemp;
-            Debug.Log($"gap: {gap} | opr[0] {operands[0]}");
-            
-            // FIXME: * as first operator causes result mismatch.
-
-            switch (operators[0]) {
-                case "*":
-                    operands[0] = 1;
-                    Debug.Log("Fix action: B");
-                    break;
-                default:
-                    if(operands[0] < mark) operands[0] += gap;
-                    else operands[0] -= gap;
-                    Debug.Log("Fix action: C");
-                    break;
-            }
-            
-            Build();
-        }
-
         void Build() {
             StringBuilder stringBuilder = new StringBuilder();
             question = null;
@@ -160,7 +139,7 @@ public class Formula
         for(int i = 0; i < operandCount - 1; i++) {
             string opr = null;
             int opd = 0;
-            int oprSelector = Random.Range(2, 4);
+            int oprSelector = Random.Range(0, 4);
 
             switch(oprSelector) {
                 case 0:
