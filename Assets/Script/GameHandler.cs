@@ -58,8 +58,8 @@ public class GameHandler : MonoBehaviour
         Formula formula = new Formula(mark, maxModifier, operandCount);
 
         string question = formula.GenerateQuestion();
-        operands = formula.operands;
-        operators = formula.operators;
+        operands = formula.Operands;
+        operators = formula.Operators;
 
         Debug.Log($"{question} = {formula.Result()}");
         Debug.Log("=======================");

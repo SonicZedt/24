@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class Formula
 {
-    public List<int> operands = new List<int>();
-    public List<string> operators = new List<string>();
-    public string question;
-    
+    private List<int> operands = new List<int>();
+    private List<string> operators = new List<string>();
+    private string question;
     private int mark, maxModifier, numberTemp, operandCount;
 
     public int MaxModifier { 
@@ -19,6 +18,9 @@ public class Formula
         get { return operandCount; }
         set { this.operandCount = value; }
         }
+    public List<int> Operands { get { return operands; }}
+    public List<string> Operators { get { return operators; }}
+    public string Question { get { return question; }}
 
     public Formula(int mark, int maxModifier, int operandCount) {
         this.mark = mark;
@@ -37,7 +39,7 @@ public class Formula
     public string GenerateQuestion() {
         int RandomNumber(List<int> list = null) {
             // Get random number from list if list isn't null
-            return list == null ? Random.Range(0, maxModifier) : list[Random.Range(0, list.Count - 1)];
+            return list == null ? Random.Range(0, maxModifier) : list[(int)Random.Range(0, list.Count - 1)];
         }
 
         void Fix() {
@@ -120,7 +122,7 @@ public class Formula
                 List<int> divisors = new List<int>();
                 float dividendSQRT = Mathf.Sqrt(dividend);
                 
-                if(dividend <= 0) {
+                if((dividend <= 0) || (dividend > maxModifier)) {
                     divisors.Add(1);
                     
                     return divisors;
@@ -128,18 +130,19 @@ public class Formula
 
                 Debug.Log($"{dividend} sqrt = {dividendSQRT}");
                 for(int i = 1; i <= dividendSQRT; i++) {
-                    if((dividend / i) > maxModifier) break;
-                    else if(dividend % i != 0) continue;
+                    if(dividend % i != 0) continue;
 
                     divisors.Add(i);
                     if(i != (dividend / i)) divisors.Add(dividend / i);
                 }
 
-                foreach(int div in divisors) Debug.Log(div);
                 return divisors;
             }
 
-            int n = RandomNumber(Divisors(numberTemp));
+            List<int> divs = Divisors(numberTemp);
+            Debug.Log(divs.Count);
+
+            int n = RandomNumber(divs);
             int mul = numberTemp * n;
             numberTemp = mul;
 
@@ -150,7 +153,7 @@ public class Formula
         for(int i = 0; i < OperandCount - 1; i++) {
             string opr = null;
             int opd = 0;
-            int oprSelector = Random.Range(0, 4);
+            int oprSelector = Random.Range(2, 4);
 
             switch(oprSelector) {
                 case 0:
