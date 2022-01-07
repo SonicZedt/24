@@ -11,6 +11,7 @@ public class GameHandler : MonoBehaviour
     [HideInInspector] [SerializeField] private int operandCount;
     [HideInInspector] [SerializeField] private int maxModifier, mark, minMark, maxMark;
     [HideInInspector] [SerializeField] private bool randomMark;
+    [HideInInspector] [SerializeField] private bool[] operatorsToggle = new bool[4];
     private List<int> operands = new List<int>();
     private List<string> operators = new List<string>();
     private Answer answer;
@@ -39,6 +40,10 @@ public class GameHandler : MonoBehaviour
         get { return maxModifier; }
         set { this.maxModifier = value; }
         }
+    public bool[] OperatorsToggle {
+        get { return operatorsToggle; }
+        set { this.operatorsToggle = value; }
+        }
     public List<int> Operands { get { return operands; }}
     public List<string> Operators { get { return operators; }}
 
@@ -55,7 +60,7 @@ public class GameHandler : MonoBehaviour
         }
 
         if(randomMark) mark = RandomMark();
-        Formula formula = new Formula(mark, maxModifier, operandCount);
+        Formula formula = new Formula(mark, maxModifier, operandCount, operatorsToggle);
 
         string question = formula.GenerateQuestion();
         operands = formula.Operands;

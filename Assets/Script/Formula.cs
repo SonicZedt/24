@@ -9,11 +9,8 @@ public class Formula
     private List<string> operators = new List<string>();
     private string question;
     private int mark, maxModifier, numberTemp, operandCount;
+    private bool[] operatorsToggle = new bool[4];
 
-    public int MaxModifier { 
-        get { return maxModifier; }
-        set { this.maxModifier = (value >= mark) | (value == 0) ? mark : value; }
-        }
     public int OperandCount {
         get { return operandCount; }
         set { this.operandCount = value; }
@@ -22,11 +19,24 @@ public class Formula
     public List<string> Operators { get { return operators; }}
     public string Question { get { return question; }}
 
-    public Formula(int mark, int maxModifier, int operandCount) {
+    public Formula(int mark, int maxModifier, int operandCount, bool[] operatorsToggle = null) {
+        operatorsToggle ??= EnableAllOperators(operatorsToggle, 4);
+
+        this.operatorsToggle = operatorsToggle;
         this.mark = mark;
-        MaxModifier = maxModifier;
-        OperandCount = operandCount;
+        this.maxModifier = maxModifier;
+        this.operandCount = operandCount;
         this.numberTemp = mark;
+    }
+
+    public bool[] EnableAllOperators(bool[] operatorsToggle, int lenght = 4) {
+        operatorsToggle ??= new bool[lenght];
+
+        for(int i = 0; i < operatorsToggle.Length; i++) {
+            operatorsToggle[i] = true;
+        }
+
+        return operatorsToggle;
     }
 
     public object Result(string formula = null) {
@@ -139,10 +149,7 @@ public class Formula
                 return divisors;
             }
 
-            List<int> divs = Divisors(numberTemp);
-            Debug.Log(divs.Count);
-
-            int n = RandomNumber(divs);
+            int n = RandomNumber(Divisors(numberTemp));
             int mul = numberTemp * n;
             numberTemp = mul;
 
@@ -150,7 +157,7 @@ public class Formula
         }
         #endregion
 
-        for(int i = 0; i < OperandCount - 1; i++) {
+        for(int i = 0; i < operandCount - 1; i++) {
             string opr = null;
             int opd = 0;
             int oprSelector = Random.Range(2, 4);
