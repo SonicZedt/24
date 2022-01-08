@@ -48,7 +48,9 @@ public class Formula
 
     public string GenerateQuestion() {
         int RandomNumber(List<int> list = null) {
-            // Get random number from list if list isn't null
+            // Get random number on range of 0 - maxModifier if list is null
+            // Else get random number from list
+
             return list == null ? Random.Range(0, maxModifier) : list[(int)Random.Range(0, list.Count - 1)];
         }
 
@@ -85,6 +87,12 @@ public class Formula
             List<int> Factors(int number) {
                 List<int> factors = new List<int>();
                 int number_max = (int)Mathf.Sqrt(number);
+
+                if(number_max <= 0) {
+                    factors.Add(1);
+                    
+                    return factors;
+                }
 
                 for(int i = 1; i <= number_max; ++i) {
                     if(number % i == 0) {
@@ -134,8 +142,7 @@ public class Formula
         }
         #endregion
         
-        int OperatorSelector() { // Retunr operator index (+, -, *, /)
-            // FIXME: Adder and multiplicator combination causes index out of range 
+        int OperatorSelector() { // Return operator index (+, -, *, /)
             int operatorIndex = Random.Range(0, 4);
 
             while(operatorsToggle[operatorIndex] == false) {
