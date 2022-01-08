@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameHandler : MonoBehaviour
 {
     [SerializeField] private new CameraController camera;
+    [SerializeField] private NotifyResult notifyResult;
     private Input input;
     [HideInInspector] [SerializeField] private int operandCount;
     [HideInInspector] [SerializeField] private int maxModifier, mark, minMark, maxMark;
@@ -77,6 +78,8 @@ public class GameHandler : MonoBehaviour
         DataTable dt = new DataTable();
 
         object resultGiven = dt.Compute(answer.Get, " ");
+        notifyResult.ShowNotification(resultGiven.ToString());
+
         Debug.Log("answer: " + resultGiven);
         Debug.Log(resultGiven.ToString() == expectedResult.ToString());
     }
