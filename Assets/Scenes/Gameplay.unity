@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 283546280}
   - component: {fileID: 283546279}
   m_Layer: 5
-  m_Name: Text_Header
+  m_Name: Text_Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -969,7 +969,7 @@ GameObject:
   - component: {fileID: 566643747}
   - component: {fileID: 566643748}
   m_Layer: 5
-  m_Name: Result_Expected
+  m_Name: Expected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
