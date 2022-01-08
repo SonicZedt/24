@@ -35,8 +35,39 @@ public class FormulaEditor : Editor
             gameHandler.MaxModifier = EditorGUILayout.IntField("Max Modifier", gameHandler.MaxModifier);
         }
 
+        void SetOperatorsToggle() {
+            bool LastOneToggled() {
+                int activeOperator = 0;
+
+                for(int i = 0; i < gameHandler.OperatorsToggle.Length; i++) {
+                    if(gameHandler.OperatorsToggle[i] == true) activeOperator++;
+                    if(activeOperator == 2) break;
+                }
+
+                return activeOperator == 1;
+            }
+
+            void Toggle(int index, string label) {
+                bool toogleable = true;
+
+                if(LastOneToggled() && gameHandler.OperatorsToggle[index]) toogleable = false;
+
+                GUI.enabled = toogleable;
+                gameHandler.OperatorsToggle[index] = EditorGUILayout.Toggle(label, gameHandler.OperatorsToggle[index]);
+            }
+
+            EditorGUILayout.LabelField("Operator Toggle");
+            EditorGUI.indentLevel++;
+                Toggle(0, "Adder");
+                Toggle(1, "Substractor");
+                Toggle(2, "Multiplicator");
+                Toggle(3, "Divider");
+            EditorGUI.indentLevel--;
+        }
+
         SetMarkProperties(gameHandler.RandomMark);
         SetOperandCount();
         SetMaxModifier();
+        SetOperatorsToggle();
     }
 }

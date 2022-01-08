@@ -9,11 +9,8 @@ public class Formula
     private List<string> operators = new List<string>();
     private string question;
     private int mark, maxModifier, numberTemp, operandCount;
+    private bool[] operatorsToggle = new bool[4];
 
-    public int MaxModifier { 
-        get { return maxModifier; }
-        set { this.maxModifier = (value >= mark) | (value == 0) ? mark : value; }
-        }
     public int OperandCount {
         get { return operandCount; }
         set { this.operandCount = value; }
@@ -22,11 +19,24 @@ public class Formula
     public List<string> Operators { get { return operators; }}
     public string Question { get { return question; }}
 
-    public Formula(int mark, int maxModifier, int operandCount) {
+    public Formula(int mark, int maxModifier, int operandCount, bool[] operatorsToggle = null) {
+        operatorsToggle ??= EnableAllOperators(operatorsToggle, 4);
+
+        this.operatorsToggle = operatorsToggle;
         this.mark = mark;
-        MaxModifier = maxModifier;
-        OperandCount = operandCount;
+        this.maxModifier = maxModifier;
+        this.operandCount = operandCount;
         this.numberTemp = mark;
+    }
+
+    public bool[] EnableAllOperators(bool[] operatorsToggle, int lenght = 4) {
+        operatorsToggle ??= new bool[lenght];
+
+        for(int i = 0; i < operatorsToggle.Length; i++) {
+            operatorsToggle[i] = true;
+        }
+
+        return operatorsToggle;
     }
 
     public object Result(string formula = null) {
@@ -38,29 +48,10 @@ public class Formula
 
     public string GenerateQuestion() {
         int RandomNumber(List<int> list = null) {
-            // Get random number from list if list isn't null
+            // Get random number on range of 0 - maxModifier if list is null
+            // Else get random number from list
+
             return list == null ? Random.Range(0, maxModifier) : list[(int)Random.Range(0, list.Count - 1)];
-        }
-
-        void Fix() {
-            int gap = mark - numberTemp;
-            Debug.Log($"gap: {gap} | opr[0] {operands[0]}");
-            
-            // FIXME: * as first operator causes result mismatch.
-
-            switch (operators[0]) {
-                case "*":
-                    operands[0] = 1;
-                    Debug.Log("Fix action: B");
-                    break;
-                default:
-                    if(operands[0] < mark) operands[0] += gap;
-                    else operands[0] -= gap;
-                    Debug.Log("Fix action: C");
-                    break;
-            }
-            
-            Build();
         }
 
         void Build() {
@@ -73,8 +64,6 @@ public class Formula
             }
             
             question = stringBuilder.ToString();
-            //Debug.Log("Q: " + question);
-            //if(Result() != mark) Fix();
         }
 
         #region Operator
@@ -99,6 +88,12 @@ public class Formula
                 List<int> factors = new List<int>();
                 int number_max = (int)Mathf.Sqrt(number);
 
+                if(number_max <= 0) {
+                    factors.Add(1);
+                    
+                    return factors;
+                }
+
                 for(int i = 1; i <= number_max; ++i) {
                     if(number % i == 0) {
                         factors.Add(i);
@@ -118,6 +113,7 @@ public class Formula
         }
 
         int Divider() {
+            // FIXME: Divider still causes result become float
             List<int> Divisors(int dividend) {
                 List<int> divisors = new List<int>();
                 float dividendSQRT = Mathf.Sqrt(dividend);
@@ -128,7 +124,6 @@ public class Formula
                     return divisors;
                 }
 
-                Debug.Log($"{dividend} sqrt = {dividendSQRT}");
                 for(int i = 1; i <= dividendSQRT; i++) {
                     if(dividend % i != 0) continue;
 
@@ -139,23 +134,31 @@ public class Formula
                 return divisors;
             }
 
-            List<int> divs = Divisors(numberTemp);
-            Debug.Log(divs.Count);
-
-            int n = RandomNumber(divs);
+            int n = RandomNumber(Divisors(numberTemp));
+            Debug.Log($"d: {numberTemp} / {n} = {numberTemp/n}");
             int mul = numberTemp * n;
             numberTemp = mul;
 
             return n;
         }
         #endregion
+        
+        int OperatorSelector() { // Return operator index (+, -, *, /)
+            int operatorIndex = Random.Range(0, 4);
 
-        for(int i = 0; i < OperandCount - 1; i++) {
+            while(!operatorsToggle[operatorIndex]) {
+                operatorIndex = Random.Range(0, 4);
+            }
+
+            return operatorIndex;
+        }
+
+        for(int i = 0; i < operandCount - 1; i++) {
             string opr = null;
             int opd = 0;
-            int oprSelector = Random.Range(2, 4);
+            int operatorSelector = OperatorSelector();
 
-            switch(oprSelector) {
+            switch(operatorSelector) {
                 case 0:
                     opr = "+";
                     opd = Adder();

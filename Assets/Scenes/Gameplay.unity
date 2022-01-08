@@ -327,10 +327,10 @@ MonoBehaviour:
   camera: {fileID: 519420030}
   operandCount: 6
   maxModifier: 50
-  randomMark: 0
   mark: 24
   minMark: 0
   maxMark: 0
+  randomMark: 0
 --- !u!4 &422122196
 Transform:
   m_ObjectHideFlags: 0
