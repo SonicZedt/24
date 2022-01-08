@@ -135,7 +135,7 @@ public class Formula
             }
 
             int n = RandomNumber(Divisors(numberTemp));
-            Debug.Log($"d: {numberTemp} / {n}");
+            Debug.Log($"d: {numberTemp} / {n} = {numberTemp/n}");
             int mul = numberTemp * n;
             numberTemp = mul;
 
