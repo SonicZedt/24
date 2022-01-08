@@ -41,6 +41,7 @@ public class FormulaEditor : Editor
 
                 for(int i = 0; i < gameHandler.OperatorsToggle.Length; i++) {
                     if(gameHandler.OperatorsToggle[i] == true) activeOperator++;
+                    if(activeOperator == 2) break;
                 }
 
                 return activeOperator == 1;
