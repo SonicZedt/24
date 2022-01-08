@@ -113,6 +113,7 @@ public class Formula
         }
 
         int Divider() {
+            // FIXME: Divider still causes result become float
             List<int> Divisors(int dividend) {
                 List<int> divisors = new List<int>();
                 float dividendSQRT = Mathf.Sqrt(dividend);
@@ -123,7 +124,6 @@ public class Formula
                     return divisors;
                 }
 
-                Debug.Log($"{dividend} sqrt = {dividendSQRT}");
                 for(int i = 1; i <= dividendSQRT; i++) {
                     if(dividend % i != 0) continue;
 
@@ -135,6 +135,7 @@ public class Formula
             }
 
             int n = RandomNumber(Divisors(numberTemp));
+            Debug.Log($"d: {numberTemp} / {n}");
             int mul = numberTemp * n;
             numberTemp = mul;
 
@@ -145,7 +146,7 @@ public class Formula
         int OperatorSelector() { // Return operator index (+, -, *, /)
             int operatorIndex = Random.Range(0, 4);
 
-            while(operatorsToggle[operatorIndex] == false) {
+            while(!operatorsToggle[operatorIndex]) {
                 operatorIndex = Random.Range(0, 4);
             }
 
