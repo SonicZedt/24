@@ -24,7 +24,7 @@ public class NotifyResult : MonoBehaviour
             fadingOut = true;
 
             StartCoroutine(FadeOut());
-        }     
+        }
     }
 
     private IEnumerator FadeOut() {
@@ -41,14 +41,13 @@ public class NotifyResult : MonoBehaviour
     }
 
     private void HideNotification() {
-        Debug.Log("Hide");
         gameObject.SetActive(false);
     }
 
     public void ShowNotification(string result) {
         fadingOut = false;
         notificationText.alpha = 1;
-        notificationText.text = "Your Answer Result Is: " + result;
+        notificationText.text = "Your Answer Result Is: " + string.Format("{0:0.##}", float.Parse(result));
 
         gameObject.SetActive(true);
     }

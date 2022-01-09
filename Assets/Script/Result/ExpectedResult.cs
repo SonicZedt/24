@@ -11,6 +11,6 @@ public class ExpectedResult : MonoBehaviour
     }
 
     private void SetExpectedResult() {
-        expectedResultText.text = gameHandler.ExpectedResult.ToString();
+        expectedResultText.text = string.Format("{0:0.##}", float.Parse(gameHandler.ExpectedResult.ToString()));
     }
 }
