@@ -7,8 +7,11 @@ public class NotifyResult : MonoBehaviour
     [SerializeField] private GameHandler gameHandler;
 
     [Header("Notification")]
-    [SerializeField] private TextMeshProUGUI resultText;
+    [SerializeField] private TextMeshProUGUI notificationText;
+    [SerializeField] private float displayDuration;
     [SerializeField] private float fadingSpeed;
+    [SerializeField] private float fadingDelay;
+    private bool fadingOut;
 
     void Start() {
         HideNotification();
@@ -17,33 +20,35 @@ public class NotifyResult : MonoBehaviour
     void Update() {
         if(!gameObject.activeSelf) return;
 
-        if(resultText.alpha == 1) {
-            Invoke(nameof(FadeOut), 3f);
-        }
+        if(!fadingOut) {
+            fadingOut = true;
+
+            StartCoroutine(FadeOut());
+        }     
     }
 
-    private void FadeOut() {
-        IEnumerator StartFadingOut() {
-            resultText.alpha -= fadingSpeed * Time.deltaTime;
+    private IEnumerator FadeOut() {
+        yield return new WaitForSeconds(displayDuration);
 
-            yield return null;
+        while(notificationText.alpha >= 0) {
+            notificationText.alpha -= fadingSpeed * Time.deltaTime;
+    
+            yield return new WaitForSeconds(fadingDelay);
         }
 
-        if(resultText.alpha <= 0) {
-            HideNotification();
-            return;
-        }
-
-        StartCoroutine(StartFadingOut());
+        HideNotification();
+        yield return null;
     }
 
     private void HideNotification() {
+        Debug.Log("Hide");
         gameObject.SetActive(false);
     }
 
     public void ShowNotification(string result) {
-        resultText.text = "Your Answer Result Is: " + result;
-        resultText.alpha = 1;
+        fadingOut = false;
+        notificationText.alpha = 1;
+        notificationText.text = "Your Answer Result Is: " + result;
 
         gameObject.SetActive(true);
     }

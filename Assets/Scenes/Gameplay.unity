@@ -1684,8 +1684,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameHandler: {fileID: 422122195}
-  resultText: {fileID: 1984379453}
-  fadingSpeed: 0.75
+  notificationText: {fileID: 1984379453}
+  displayDuration: 3
+  fadingSpeed: 1
+  fadingDelay: 0.01
 --- !u!224 &1815554033
 RectTransform:
   m_ObjectHideFlags: 0
