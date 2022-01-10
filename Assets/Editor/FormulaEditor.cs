@@ -35,6 +35,10 @@ public class FormulaEditor : Editor
             gameHandler.MaxModifier = EditorGUILayout.IntField("Max Modifier", gameHandler.MaxModifier);
         }
 
+        void SetResultSign() {
+            gameHandler.NonNegative = EditorGUILayout.Toggle("Non Negative Result", gameHandler.NonNegative);
+        }
+
         void SetOperatorsToggle() {
             bool LastOneToggled() {
                 int activeOperator = 0;
@@ -68,6 +72,7 @@ public class FormulaEditor : Editor
         SetMarkProperties(gameHandler.RandomMark);
         SetOperandCount();
         SetMaxModifier();
+        SetResultSign();
         SetOperatorsToggle();
     }
 }

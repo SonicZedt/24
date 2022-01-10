@@ -11,6 +11,7 @@ public class GameHandler : MonoBehaviour
     [HideInInspector] [SerializeField] private int operandCount;
     [HideInInspector] [SerializeField] private int maxModifier, mark, minMark, maxMark;
     [HideInInspector] [SerializeField] private bool randomMark;
+    [HideInInspector] [SerializeField] private bool nonNegative;
     [HideInInspector] [SerializeField] private bool[] operatorsToggle = new bool[4];
     private object expectedResult;
     private List<int> operands = new List<int>();
@@ -45,6 +46,10 @@ public class GameHandler : MonoBehaviour
         get { return operatorsToggle; }
         set { this.operatorsToggle = value; }
         }
+    public bool NonNegative {
+        get { return nonNegative; }
+        set { this.nonNegative = value; }
+        }
     public List<int> Operands { get { return operands; }}
     public List<string> Operators { get { return operators; }}
     public object ExpectedResult { get { return expectedResult; }}
@@ -58,7 +63,7 @@ public class GameHandler : MonoBehaviour
 
     private void GenerateFormula() {
         int RandomMark() {
-            return (int)Random.Range(minMark, maxMark++);
+            return (int)Random.Range(minMark, maxMark);
         }
 
         if(randomMark) mark = RandomMark();

@@ -67,10 +67,16 @@ public class Formula
         }
 
         #region Operator
+        void CheckNegative(int n, string loc) {
+            if(n < 0) Debug.Log($"Negative exist ({numberTemp}) because (n = {n}) in {loc}");
+        }
+
         int Adder() {
             int n = RandomNumber();
             int diff = numberTemp - n;
             numberTemp = diff;
+            
+            CheckNegative(n, nameof(Adder));
 
             return n;
         }
@@ -79,6 +85,8 @@ public class Formula
             int n = RandomNumber();
             int sum = numberTemp + n;
             numberTemp = sum;
+    
+            CheckNegative(n, nameof(Subtractor));
 
             return n;
         }
@@ -109,11 +117,12 @@ public class Formula
             int div = numberTemp / n;
             numberTemp = div;
 
+            CheckNegative(n, nameof(Multiplicator));
+
             return n;
         }
 
         int Divider() {
-            // FIXME: Divider still causes result become float
             List<int> Divisors(int dividend) {
                 List<int> divisors = new List<int>();
                 float dividendSQRT = Mathf.Sqrt(dividend);
@@ -135,9 +144,10 @@ public class Formula
             }
 
             int n = RandomNumber(Divisors(numberTemp));
-            Debug.Log($"d: {numberTemp} / {n} = {numberTemp/n}");
             int mul = numberTemp * n;
             numberTemp = mul;
+
+            CheckNegative(n, nameof(Divider));
 
             return n;
         }
