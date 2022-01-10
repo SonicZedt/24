@@ -10,7 +10,7 @@ public class GameHandler : MonoBehaviour
     private Input input;
     [HideInInspector] [SerializeField] private int operandCount;
     [HideInInspector] [SerializeField] private int modifier, mark, minMark, maxMark, minModifier, maxModifier;
-    [HideInInspector] [SerializeField] private bool randomMark, randomModifier, nonNegative;
+    [HideInInspector] [SerializeField] private bool includeMark, randomMark, randomModifier, nonNegative;
     [HideInInspector] [SerializeField] private bool[] operatorsToggle = new bool[4];
     private object expectedResult;
     private List<int> operands = new List<int>();
@@ -18,6 +18,10 @@ public class GameHandler : MonoBehaviour
     private Answer answer;
 
     #region Getter & Setter
+    public bool IncludeMark {
+        get { return includeMark; }
+        set { this.includeMark = value; }
+        }
     public bool RandomMark {
         get { return randomMark; }
         set { this.randomMark = value; }
@@ -85,10 +89,10 @@ public class GameHandler : MonoBehaviour
         
         if(randomModifier) {
             int[] modifierRange = {minModifier, maxModifier};
-            formula = new Formula(mark, modifierRange, operandCount, operatorsToggle);
+            formula = new Formula(mark, modifierRange, operandCount, operatorsToggle, includeMark);
         }
         else {
-            formula = new Formula(mark, modifier, operandCount, operatorsToggle);
+            formula = new Formula(mark, modifier, operandCount, operatorsToggle, includeMark);
         }
 
         string question = formula.GenerateQuestion();

@@ -13,22 +13,22 @@ public class FormulaEditor : Editor
         EditorGUILayout.LabelField("Formula", EditorStyles.boldLabel);
         
         void SetMarkProperties(bool random) {
-            EditorGUILayout.LabelField("Mark");
-            
+            gameHandler.IncludeMark = EditorGUILayout.Toggle("Mark", gameHandler.IncludeMark);
+
             EditorGUI.indentLevel++;
-                GUI.enabled = !random;
+                GUI.enabled = gameHandler.IncludeMark;
+                gameHandler.RandomMark = EditorGUILayout.Toggle("Random Mark", gameHandler.RandomMark);
+                
+                GUI.enabled = !random & gameHandler.IncludeMark;
                 gameHandler.Mark = EditorGUILayout.IntField("Constant Mark", gameHandler.Mark, GUILayout.Width(175));
 
-                GUI.enabled = true;
-                gameHandler.RandomMark = EditorGUILayout.Toggle("Random Mark", gameHandler.RandomMark);
-
-                GUI.enabled = random;
+                GUI.enabled = random & gameHandler.IncludeMark;
                 EditorGUI.indentLevel++;
                     gameHandler.MinMark = EditorGUILayout.IntField("Min", gameHandler.MinMark, GUILayout.Width(175));
                     gameHandler.MaxMark = EditorGUILayout.IntField("Max", gameHandler.MaxMark, GUILayout.Width(175));
                 EditorGUI.indentLevel--;
-                GUI.enabled = true;
             EditorGUI.indentLevel--;
+            GUI.enabled = true;
         }
 
         void SetOperandCount() {
@@ -39,11 +39,10 @@ public class FormulaEditor : Editor
             EditorGUILayout.LabelField("Modifier");
 
             EditorGUI.indentLevel++;
+                gameHandler.RandomModifier = EditorGUILayout.Toggle("Random Modifier", gameHandler.RandomModifier);
+                
                 GUI.enabled = !random;
                 gameHandler.Modifier = EditorGUILayout.IntField("Constant Modifier", gameHandler.Modifier, GUILayout.Width(175));
-
-                GUI.enabled = true;
-                gameHandler.RandomModifier = EditorGUILayout.Toggle("Random Modifier", gameHandler.RandomModifier);
 
                 GUI.enabled = random;
                 EditorGUI.indentLevel++;
@@ -89,9 +88,9 @@ public class FormulaEditor : Editor
         }
 
         SetOperandCount();
+        SetResultSign();
         SetMarkProperties(gameHandler.RandomMark);
         SetModifierProperties(gameHandler.RandomModifier);
-        SetResultSign();
         SetOperatorsToggle();
     }
 }

@@ -8,8 +8,8 @@ public class Formula
     private List<int> operands = new List<int>();
     private List<string> operators = new List<string>();
     private string question;
-    private int mark, modifier, numberTemp, operandCount;
-    private bool randomModifier;
+    private int mark, modifier, operandCount;
+    private bool randomModifier, includeMark;
     private int[] modifierRange = new int[2];
     private bool[] operatorsToggle = new bool[4];
 
@@ -21,28 +21,28 @@ public class Formula
     public List<string> Operators { get { return operators; }}
     public string Question { get { return question; }}
 
-    public Formula(int mark, int modifier, int operandCount, bool[] operatorsToggle = null) {
+    public Formula(int mark, int modifier, int operandCount, bool[] operatorsToggle = null, bool includeMark = false) {
         // Constant modifier
         operatorsToggle ??= EnableAllOperators(operatorsToggle, 4);
 
+        this.includeMark = includeMark;
         this.randomModifier = false;
         this.operatorsToggle = operatorsToggle;
         this.mark = mark;
         this.modifier = modifier;
         this.operandCount = operandCount;
-        this.numberTemp = mark;
     }
 
-    public Formula(int mark, int[] modifierRange, int operandCount, bool[] operatorsToggle = null) {
+    public Formula(int mark, int[] modifierRange, int operandCount, bool[] operatorsToggle = null, bool includeMark = false) {
         // Random modifier
         operatorsToggle ??= EnableAllOperators(operatorsToggle, 4);
-        
+
+        this.includeMark = includeMark;
         this.randomModifier = true;
         this.operatorsToggle = operatorsToggle;
         this.mark = mark;
         this.modifierRange = modifierRange;
         this.operandCount = operandCount;
-        this.numberTemp = mark;
     }
 
     public bool[] EnableAllOperators(bool[] operatorsToggle, int lenght = 4) {
@@ -65,7 +65,7 @@ public class Formula
     public string GenerateQuestion() {
         // FIXME: Sequentialy generated is bad approach except for addition and substraction
         
-        int GetModifier() {
+        int RandomModifier() {
             return randomModifier ? Random.Range(modifierRange[0], modifierRange[1]++) : modifier;
         }
 
@@ -73,7 +73,7 @@ public class Formula
             // Return random number on range of 0 - maxModifier if list is null
             // Else return random number from list
 
-            return list == null ? Random.Range(0, GetModifier()) : list[(int)Random.Range(0, list.Count - 1)];
+            return list == null ? Random.Range(0, RandomModifier()) : list[(int)Random.Range(0, list.Count - 1)];
         }
 
         void Build() {
@@ -90,26 +90,22 @@ public class Formula
 
         #region Operator
         void CheckNegative(int n, string loc) {
-            if(n < 0) Debug.Log($"Negative exist ({numberTemp}) because (n = {n}) in {loc}");
+            if(n < 0) Debug.Log($"Negative exist ({mark}) because (n = {n}) in {loc}");
         }
 
         int Adder() {
             int n = RandomNumber();
-            int diff = numberTemp - n;
-            numberTemp = diff;
+            int diff = mark - n;
+            mark = diff;
             
-            CheckNegative(n, nameof(Adder));
-
             return n;
         }
 
         int Subtractor() {
             int n = RandomNumber();
-            int sum = numberTemp + n;
-            numberTemp = sum;
+            int sum = mark + n;
+            mark = sum;
     
-            CheckNegative(n, nameof(Subtractor));
-
             return n;
         }
 
@@ -135,11 +131,10 @@ public class Formula
                 return factors;
             }
 
-            int n = RandomNumber(Factors(numberTemp));
-            int div = numberTemp / n;
-            numberTemp = div;
-
-            CheckNegative(n, nameof(Multiplicator));
+            int factorMark = includeMark ? mark : RandomModifier();
+            int n = RandomNumber(Factors(factorMark));
+            int div = mark / n;
+            mark = div;
 
             return n;
         }
@@ -165,11 +160,10 @@ public class Formula
                 return divisors;
             }
 
-            int n = RandomNumber(Divisors(numberTemp));
-            int mul = numberTemp * n;
-            numberTemp = mul;
-
-            CheckNegative(n, nameof(Divider));
+            int divisorMark = includeMark ? mark : RandomModifier();
+            int n = RandomNumber(Divisors(divisorMark));
+            int mul = mark * n;
+            mark = mul;
 
             return n;
         }
@@ -213,10 +207,10 @@ public class Formula
             operators.Add(opr);
         }
 
-        // FIXME: numberTemp (first operand) sometimes too big
-        //if(numberTemp > maxModifier) numberTemp = maxModifier;
-
-        operands.Add(numberTemp);
+        int firstOperand = includeMark ? mark : RandomNumber();
+        
+        // Assign remaining value of mark as first operand if enabled
+        operands.Add(firstOperand);
         operands.Reverse();
         operators.Reverse();
         Build();
