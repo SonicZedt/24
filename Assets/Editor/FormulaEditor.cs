@@ -13,26 +13,45 @@ public class FormulaEditor : Editor
         EditorGUILayout.LabelField("Formula", EditorStyles.boldLabel);
         
         void SetMarkProperties(bool random) {
-            GUI.enabled = !random;
-            gameHandler.Mark = EditorGUILayout.IntField("Constant Mark", gameHandler.Mark, GUILayout.Width(175));
-        
-            GUI.enabled = true;
-            gameHandler.RandomMark = EditorGUILayout.Toggle("Random Mark", gameHandler.RandomMark);
-
-            GUI.enabled = random;
+            EditorGUILayout.LabelField("Mark");
+            
             EditorGUI.indentLevel++;
-                gameHandler.MinMark = EditorGUILayout.IntField("Min", gameHandler.MinMark, GUILayout.Width(175));
-                gameHandler.MaxMark = EditorGUILayout.IntField("Max", gameHandler.MaxMark, GUILayout.Width(175));
+                GUI.enabled = !random;
+                gameHandler.Mark = EditorGUILayout.IntField("Constant Mark", gameHandler.Mark, GUILayout.Width(175));
+
+                GUI.enabled = true;
+                gameHandler.RandomMark = EditorGUILayout.Toggle("Random Mark", gameHandler.RandomMark);
+
+                GUI.enabled = random;
+                EditorGUI.indentLevel++;
+                    gameHandler.MinMark = EditorGUILayout.IntField("Min", gameHandler.MinMark, GUILayout.Width(175));
+                    gameHandler.MaxMark = EditorGUILayout.IntField("Max", gameHandler.MaxMark, GUILayout.Width(175));
+                EditorGUI.indentLevel--;
+                GUI.enabled = true;
             EditorGUI.indentLevel--;
-            GUI.enabled = true;
         }
 
         void SetOperandCount() {
             gameHandler.OperandCount = EditorGUILayout.IntField("Operand Count", gameHandler.OperandCount);
         }
 
-        void SetMaxModifier() {
-            gameHandler.MaxModifier = EditorGUILayout.IntField("Max Modifier", gameHandler.MaxModifier);
+        void SetModifierProperties(bool random) {
+            EditorGUILayout.LabelField("Modifier");
+
+            EditorGUI.indentLevel++;
+                GUI.enabled = !random;
+                gameHandler.Modifier = EditorGUILayout.IntField("Constant Modifier", gameHandler.Modifier, GUILayout.Width(175));
+
+                GUI.enabled = true;
+                gameHandler.RandomModifier = EditorGUILayout.Toggle("Random Modifier", gameHandler.RandomModifier);
+
+                GUI.enabled = random;
+                EditorGUI.indentLevel++;
+                    gameHandler.MinModifier = EditorGUILayout.IntField("Min", gameHandler.MinModifier, GUILayout.Width(175));
+                    gameHandler.MaxModifier = EditorGUILayout.IntField("Max", gameHandler.MaxModifier, GUILayout.Width(175));
+                EditorGUI.indentLevel--;
+                GUI.enabled = true;
+            EditorGUI.indentLevel--;
         }
 
         void SetResultSign() {
@@ -69,9 +88,9 @@ public class FormulaEditor : Editor
             EditorGUI.indentLevel--;
         }
 
-        SetMarkProperties(gameHandler.RandomMark);
         SetOperandCount();
-        SetMaxModifier();
+        SetMarkProperties(gameHandler.RandomMark);
+        SetModifierProperties(gameHandler.RandomModifier);
         SetResultSign();
         SetOperatorsToggle();
     }

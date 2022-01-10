@@ -9,15 +9,15 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private NotifyResult notifyResult;
     private Input input;
     [HideInInspector] [SerializeField] private int operandCount;
-    [HideInInspector] [SerializeField] private int maxModifier, mark, minMark, maxMark;
-    [HideInInspector] [SerializeField] private bool randomMark;
-    [HideInInspector] [SerializeField] private bool nonNegative;
+    [HideInInspector] [SerializeField] private int modifier, mark, minMark, maxMark, minModifier, maxModifier;
+    [HideInInspector] [SerializeField] private bool randomMark, randomModifier, nonNegative;
     [HideInInspector] [SerializeField] private bool[] operatorsToggle = new bool[4];
     private object expectedResult;
     private List<int> operands = new List<int>();
     private List<string> operators = new List<string>();
     private Answer answer;
 
+    #region Getter & Setter
     public bool RandomMark {
         get { return randomMark; }
         set { this.randomMark = value; }
@@ -38,6 +38,18 @@ public class GameHandler : MonoBehaviour
         get { return operandCount; }
         set { this.operandCount = value; }
         }
+    public bool RandomModifier {
+        get { return randomModifier; }
+        set { this.randomModifier = value; }
+        }
+    public int Modifier { 
+        get { return modifier; }
+        set { this.modifier = value; }
+        }
+    public int MinModifier {
+        get { return minModifier; }
+        set { this.minModifier = value; }
+        }
     public int MaxModifier {
         get { return maxModifier; }
         set { this.maxModifier = value; }
@@ -53,6 +65,7 @@ public class GameHandler : MonoBehaviour
     public List<int> Operands { get { return operands; }}
     public List<string> Operators { get { return operators; }}
     public object ExpectedResult { get { return expectedResult; }}
+    #endregion
 
     void Awake() {
         input = GetComponent<Input>();
@@ -62,12 +75,21 @@ public class GameHandler : MonoBehaviour
     }
 
     private void GenerateFormula() {
+        Formula formula;
+
         int RandomMark() {
             return (int)Random.Range(minMark, maxMark);
         }
 
         if(randomMark) mark = RandomMark();
-        Formula formula = new Formula(mark, maxModifier, operandCount, operatorsToggle);
+        
+        if(randomModifier) {
+            int[] modifierRange = {minModifier, maxModifier};
+            formula = new Formula(mark, modifierRange, operandCount, operatorsToggle);
+        }
+        else {
+            formula = new Formula(mark, modifier, operandCount, operatorsToggle);
+        }
 
         string question = formula.GenerateQuestion();
         operands = formula.Operands;

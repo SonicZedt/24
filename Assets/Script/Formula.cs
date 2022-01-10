@@ -8,7 +8,9 @@ public class Formula
     private List<int> operands = new List<int>();
     private List<string> operators = new List<string>();
     private string question;
-    private int mark, maxModifier, numberTemp, operandCount;
+    private int mark, modifier, numberTemp, operandCount;
+    private bool randomModifier;
+    private int[] modifierRange = new int[2];
     private bool[] operatorsToggle = new bool[4];
 
     public int OperandCount {
@@ -19,12 +21,26 @@ public class Formula
     public List<string> Operators { get { return operators; }}
     public string Question { get { return question; }}
 
-    public Formula(int mark, int maxModifier, int operandCount, bool[] operatorsToggle = null) {
+    public Formula(int mark, int modifier, int operandCount, bool[] operatorsToggle = null) {
+        // Constant modifier
         operatorsToggle ??= EnableAllOperators(operatorsToggle, 4);
 
+        this.randomModifier = false;
         this.operatorsToggle = operatorsToggle;
         this.mark = mark;
-        this.maxModifier = maxModifier;
+        this.modifier = modifier;
+        this.operandCount = operandCount;
+        this.numberTemp = mark;
+    }
+
+    public Formula(int mark, int[] modifierRange, int operandCount, bool[] operatorsToggle = null) {
+        // Random modifier
+        operatorsToggle ??= EnableAllOperators(operatorsToggle, 4);
+        
+        this.randomModifier = true;
+        this.operatorsToggle = operatorsToggle;
+        this.mark = mark;
+        this.modifierRange = modifierRange;
         this.operandCount = operandCount;
         this.numberTemp = mark;
     }
@@ -47,11 +63,13 @@ public class Formula
     }
 
     public string GenerateQuestion() {
+        // FIXME: Sequentialy generated is bad approach except for addition and substraction
+
         int RandomNumber(List<int> list = null) {
             // Get random number on range of 0 - maxModifier if list is null
             // Else get random number from list
 
-            return list == null ? Random.Range(0, maxModifier) : list[(int)Random.Range(0, list.Count - 1)];
+            return list == null ? Random.Range(0, modifier) : list[(int)Random.Range(0, list.Count - 1)];
         }
 
         void Build() {
@@ -127,7 +145,7 @@ public class Formula
                 List<int> divisors = new List<int>();
                 float dividendSQRT = Mathf.Sqrt(dividend);
                 
-                if((dividend <= 0) || (dividend > maxModifier)) {
+                if((dividend <= 0) || (dividend > modifier)) {
                     divisors.Add(1);
                     
                     return divisors;
