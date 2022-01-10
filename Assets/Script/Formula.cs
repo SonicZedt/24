@@ -64,12 +64,16 @@ public class Formula
 
     public string GenerateQuestion() {
         // FIXME: Sequentialy generated is bad approach except for addition and substraction
+        
+        int GetModifier() {
+            return randomModifier ? Random.Range(modifierRange[0], modifierRange[1]++) : modifier;
+        }
 
         int RandomNumber(List<int> list = null) {
-            // Get random number on range of 0 - maxModifier if list is null
-            // Else get random number from list
+            // Return random number on range of 0 - maxModifier if list is null
+            // Else return random number from list
 
-            return list == null ? Random.Range(0, modifier) : list[(int)Random.Range(0, list.Count - 1)];
+            return list == null ? Random.Range(0, GetModifier()) : list[(int)Random.Range(0, list.Count - 1)];
         }
 
         void Build() {
