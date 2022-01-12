@@ -120,11 +120,13 @@ public class Formula
                         break;
                     case "*":
                         // Add operand with gap
-                        operands[minValueIndex] += gap;
+                        operands[minValueIndex] *= 2;
                         break;
                     case "/":
+                        // TODO: Maybe little bit improvement for / reevaluator
                         // Turn operand into 1
-                        operands[minValueIndex] = 1;
+                        if(operands[minValueIndex] == 1) operators[minValueOperatorIndex] = "+";
+                        else operands[minValueIndex] = 1;
                         break;
                 }
             }
@@ -272,7 +274,7 @@ public class Formula
             }
 
             float result = ResultFloat();
-            Debug.Log($"[{loopSafetyNet}]\n                      {question} = {result}");
+            Debug.Log($"[{loopSafetyNet}] {question} = {result}");
             int gap = 1 - (int)result;
             loopSafetyNet++;
 
