@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Linq;
 using UnityEngine;
 
 public class Formula
@@ -8,8 +9,8 @@ public class Formula
     private List<int> operands = new List<int>();
     private List<string> operators = new List<string>();
     private string question;
-    private int mark, modifier, operandCount;
-    private bool randomModifier, includeMark;
+    private int mark, modifier, operandCount, maxModifier;
+    private bool randomModifier, includeMark, naturalNumber;
     private int[] modifierRange = new int[2];
     private bool[] operatorsToggle = new bool[4];
 
@@ -21,32 +22,42 @@ public class Formula
     public List<string> Operators { get { return operators; }}
     public string Question { get { return question; }}
 
-    public Formula(int mark, int modifier, int operandCount, bool[] operatorsToggle = null, bool includeMark = false) {
-        // Constant modifier
+    // Constant modifier
+    public Formula(int mark, int modifier, int operandCount,
+                    bool[] operatorsToggle = null,
+                    bool includeMark = false,
+                    bool naturalNumber = false) {
         operatorsToggle ??= EnableAllOperators(operatorsToggle, 4);
 
         this.includeMark = includeMark;
+        this.naturalNumber = naturalNumber;
         this.randomModifier = false;
         this.operatorsToggle = operatorsToggle;
         this.mark = mark;
         this.modifier = modifier;
+        this.maxModifier = modifier;
         this.operandCount = operandCount;
     }
 
-    public Formula(int mark, int[] modifierRange, int operandCount, bool[] operatorsToggle = null, bool includeMark = false) {
-        // Random modifier
+    // Random modifier
+    public Formula(int mark, int[] modifierRange, int operandCount,
+                    bool[] operatorsToggle = null,
+                    bool includeMark = false,
+                    bool naturalNumber = false) {
         operatorsToggle ??= EnableAllOperators(operatorsToggle, 4);
 
         this.includeMark = includeMark;
+        this.naturalNumber = naturalNumber;
         this.randomModifier = true;
         this.operatorsToggle = operatorsToggle;
         this.mark = mark;
         this.modifierRange = modifierRange;
+        this.maxModifier = modifierRange[1];
         this.operandCount = operandCount;
     }
 
-    public bool[] EnableAllOperators(bool[] operatorsToggle, int lenght = 4) {
-        operatorsToggle ??= new bool[lenght];
+    public bool[] EnableAllOperators(bool[] operatorsToggle, int length = 4) {
+        operatorsToggle ??= new bool[length];
 
         for(int i = 0; i < operatorsToggle.Length; i++) {
             operatorsToggle[i] = true;
@@ -62,18 +73,61 @@ public class Formula
         return dt.Compute(formula, " ");
     }
 
+    public float ResultFloat(string formula = null) {
+        return float.Parse(Result(formula).ToString());
+    }
+
     public string GenerateQuestion() {
         // FIXME: Sequentialy generated is bad approach except for addition and substraction
         
-        int RandomModifier() {
+        int GetModifier() {
             return randomModifier ? Random.Range(modifierRange[0], modifierRange[1]++) : modifier;
         }
 
         int RandomNumber(List<int> list = null) {
-            // Return random number on range of 0 - maxModifier if list is null
+            // Return random modifier if list is null
             // Else return random number from list
 
-            return list == null ? Random.Range(0, RandomModifier()) : list[(int)Random.Range(0, list.Count - 1)];
+            return list == null ? GetModifier() : list[(int)Random.Range(0, list.Count - 1)];
+        }
+
+        void CheckNegative(int n, string loc) {
+            if(n < 0) Debug.Log($"Negative exist ({mark}) because (n = {n}) in {loc}");
+        }
+
+        void Reevaluate(int gap) {
+            // Added or multipli smallest number
+
+            int smallestOperand = operands.Min();
+            int minValueIndex = operands.IndexOf(smallestOperand);
+
+            Debug.Log($"Reevaluating, gap: {gap}");
+            Debug.Log($"min val is {smallestOperand} at [{minValueIndex}]");
+
+            if(minValueIndex == 0) operands[0] += gap <= maxModifier ? gap : maxModifier;
+            else {
+                int minValueOperatorIndex = minValueIndex - 1;
+                string minValueOperator = operators[minValueOperatorIndex];
+                
+                switch (minValueOperator) {
+                    case "+":
+                        // Change to another number
+                        operands[minValueIndex] = (int)Random.Range(smallestOperand, maxModifier);
+                        break;
+                    case "-":
+                        // Change the operator
+                        operators[minValueOperatorIndex] = "+";
+                        break;
+                    case "*":
+                        // Add operand with gap
+                        operands[minValueIndex] += gap;
+                        break;
+                    case "/":
+                        // Turn operand into 1
+                        operands[minValueIndex] = 1;
+                        break;
+                }
+            }
         }
 
         void Build() {
@@ -89,10 +143,6 @@ public class Formula
         }
 
         #region Operator
-        void CheckNegative(int n, string loc) {
-            if(n < 0) Debug.Log($"Negative exist ({mark}) because (n = {n}) in {loc}");
-        }
-
         int Adder() {
             int n = RandomNumber();
             int diff = mark - n;
@@ -131,7 +181,7 @@ public class Formula
                 return factors;
             }
 
-            int factorMark = includeMark ? mark : RandomModifier();
+            int factorMark = includeMark ? mark : GetModifier();
             int n = RandomNumber(Factors(factorMark));
             int div = mark / n;
             mark = div;
@@ -160,7 +210,7 @@ public class Formula
                 return divisors;
             }
 
-            int divisorMark = includeMark ? mark : RandomModifier();
+            int divisorMark = includeMark ? mark : GetModifier();
             int n = RandomNumber(Divisors(divisorMark));
             int mul = mark * n;
             mark = mul;
@@ -207,13 +257,28 @@ public class Formula
             operators.Add(opr);
         }
 
+        // Assign remaining value of mark as first operand if mark included
         int firstOperand = includeMark ? mark : RandomNumber();
-        
-        // Assign remaining value of mark as first operand if enabled
         operands.Add(firstOperand);
         operands.Reverse();
         operators.Reverse();
         Build();
+
+        int loopSafetyNet = 0;
+        while((ResultFloat() < 1) && naturalNumber) {
+            if(loopSafetyNet >= 5) {
+                Debug.Log("exit loop");
+                break;
+            }
+
+            float result = ResultFloat();
+            Debug.Log($"[{loopSafetyNet}]\n                      {question} = {result}");
+            int gap = 1 - (int)result;
+            loopSafetyNet++;
+
+            Reevaluate(gap);
+            Build();
+        }
 
         return question;
     }

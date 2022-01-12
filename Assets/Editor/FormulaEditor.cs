@@ -54,7 +54,7 @@ public class FormulaEditor : Editor
         }
 
         void SetResultSign() {
-            gameHandler.NonNegative = EditorGUILayout.Toggle("Non Negative Result", gameHandler.NonNegative);
+            gameHandler.NaturalNumber = EditorGUILayout.Toggle("Natural Number", gameHandler.NaturalNumber);
         }
 
         void SetOperatorsToggle() {
