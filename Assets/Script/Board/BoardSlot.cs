@@ -25,14 +25,33 @@ public class BoardSlot : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData) {
         // TODO: Swappable on board card
-        cardObject = eventData.pointerDrag;
+        GameObject cardObjectOnDrag = eventData.pointerDrag;
+        Card cardOnDrag = cardObjectOnDrag.GetComponent<Card>();
 
-        if(cardObject != null) {
-            Card card = cardObject.GetComponent<Card>();
+        if(hasCard) SwapCard();
+        else PutNewCard();
 
-            cardObject.GetComponent<RectTransform>().position = GetComponent<RectTransform>().position;
-            card.DroppedOnBoard = true;
-            value = card.Value;
+        void PutNewCard() {
+            cardObject = cardObjectOnDrag;
+            Card cardOnBoard = cardObject.GetComponent<Card>();
+            Vector3 slotPosition = GetComponent<RectTransform>().position;
+
+            cardObject.GetComponent<RectTransform>().position = slotPosition;
+            cardOnBoard.DroppedOnBoard = true;
+            cardOnBoard.SlotOrigin = gameObject;
+            value = cardOnBoard.Value;
+        }
+
+        void SwapCard() {
+            Card cardOnBoard = cardObject.GetComponent<Card>();
+            Vector3 cardOnBoardPosition = cardObject.GetComponent<RectTransform>().position;
+
+            if(cardOnDrag.DroppedOnBoard)
+                cardObject.GetComponent<RectTransform>().position = cardOnDrag.SlotOrigin.transform.position;
+            else
+                cardObject.GetComponent<RectTransform>().position = cardOnBoard.DeckSlot.transform.position;
+
+            PutNewCard();
         }
     }
 }
