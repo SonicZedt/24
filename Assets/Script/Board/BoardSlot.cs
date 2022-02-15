@@ -46,10 +46,8 @@ public class BoardSlot : MonoBehaviour, IDropHandler
             Card cardOnBoard = cardObject.GetComponent<Card>();
             Vector3 cardOnBoardPosition = cardObject.GetComponent<RectTransform>().position;
 
-            if(cardOnDrag.DroppedOnBoard)
-                cardObject.GetComponent<RectTransform>().position = cardOnDrag.SlotOrigin.transform.position;
-            else
-                cardObject.GetComponent<RectTransform>().position = cardOnBoard.DeckSlot.transform.position;
+            if(cardOnDrag.DroppedOnBoard) cardOnBoard.MoveToSlot(cardOnBoard.SlotOrigin);
+            else cardOnBoard.BackToDeck();
 
             PutNewCard();
         }

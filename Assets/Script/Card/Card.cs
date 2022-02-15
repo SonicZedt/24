@@ -57,6 +57,14 @@ public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
     // FIXME: block raycast again so card can be moved again after dropped on board slot
 
+    public void MoveToSlot(GameObject slot) {
+        rectTransform.position = slot.transform.position;
+    }
+
+    public void BackToDeck() {
+        rectTransform.position = deckSlot.transform.position;
+    }
+
     public void OnBeginDrag(PointerEventData eventData) {
         onEndDrag = false;
         droppedOnBoard = false;
