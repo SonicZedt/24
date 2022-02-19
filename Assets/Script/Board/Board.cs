@@ -37,6 +37,8 @@ public class Board : MonoBehaviour
 
         for(int i = 0; i < operandCount; i++) {
             GameObject slot = Instantiate(slotPrefab, SpawnPosition(i, positionModifier), Quaternion.identity, slotParent);
+    
+            slot.GetComponent<BoardSlot>().slotID = i;
             slots.Add(slot);
         }
     }

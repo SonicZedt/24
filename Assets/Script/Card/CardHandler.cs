@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CardHandler : MonoBehaviour
 {
+    public bool draggingCard;
+    
     [SerializeField] private GameHandler gameHandler;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Deck deck;
@@ -37,6 +39,7 @@ public class CardHandler : MonoBehaviour
                 int index = Random.Range(0, slotTransform.Count);
                 cardList[i].transform.position = slotTransform[index].position;
                 card.DeckSlot = slotTransform[index].gameObject;
+                card.handler = this;
                 slotTransform.RemoveAt(index);
             }
         }
