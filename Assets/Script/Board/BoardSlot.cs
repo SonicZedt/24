@@ -3,36 +3,58 @@ using UnityEngine.EventSystems;
 
 public class BoardSlot : MonoBehaviour, IDropHandler
 {
-    private GameObject cardObject;
+    public int slotID;
+    public GameObject cardObject;
+
     private int value;
     private bool hasCard;
 
     public int Value { get { return value; }}
-    public bool HasCard { get { return hasCard; }}
+    public bool HasCard { 
+        get { return hasCard; }
+        set { this.hasCard = value; }
+        }
 
     void Update() {
-        CheckCard();
+        SlotState();
     }
 
-    private void CheckCard() {
-        hasCard = cardObject == null ? false : cardObject.transform.position == transform.position;
-
+    private void SlotState() {
         if(!hasCard) {
+            // Confirm hasCard value
+            //hasCard = cardObject == null ? false : cardObject != null;
+
             cardObject = null;
             value = 0;
         }
     }
 
     public void OnDrop(PointerEventData eventData) {
-        // TODO: Swappable on board card
-        cardObject = eventData.pointerDrag;
+        GameObject cardObjectOnDrag = eventData.pointerDrag;
+        Card cardOnDrag = cardObjectOnDrag.GetComponent<Card>();
 
-        if(cardObject != null) {
-            Card card = cardObject.GetComponent<Card>();
+        if(hasCard) SwapCard();
+        else PutNewCard();
 
-            cardObject.GetComponent<RectTransform>().position = GetComponent<RectTransform>().position;
-            card.DroppedOnBoard = true;
-            value = card.Value;
+        void PutNewCard() {
+            cardObject = cardObjectOnDrag;
+            hasCard = true;
+            Card cardOnBoard = cardObject.GetComponent<Card>();
+            Vector3 slotPosition = GetComponent<RectTransform>().position;
+
+            cardObject.GetComponent<RectTransform>().position = slotPosition;
+            cardOnBoard.DroppedOnBoard = true;
+            cardOnBoard.SlotOrigin = gameObject;
+            value = cardOnBoard.Value;
+        }
+
+        void SwapCard() {
+            Card cardOnBoard = cardObject.GetComponent<Card>();
+
+            if(cardOnDrag.SlotOrigin.GetComponent<BoardSlot>() != null) cardOnBoard.Swap(cardOnDrag);
+            else cardOnBoard.BackToDeck();
+
+            PutNewCard();
         }
     }
 }
