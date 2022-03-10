@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameHandler : MonoBehaviour
 {
+    [HideInInspector] public List<Card> cards = new List<Card>();
+    
     [SerializeField] private new CameraController camera;
     [SerializeField] private NotifyResult notifyResult;
     private Input input;
@@ -89,10 +91,24 @@ public class GameHandler : MonoBehaviour
         
         if(randomModifier) {
             int[] modifierRange = {minModifier, maxModifier};
-            formula = new Formula(mark, modifierRange, operandCount, operatorsToggle, includeMark, naturalNumber);
+            formula = new Formula(
+                mark,
+                modifierRange,
+                operandCount,
+                operatorsToggle,
+                includeMark,
+                naturalNumber
+            );
         }
         else {
-            formula = new Formula(mark, modifier, operandCount, operatorsToggle, includeMark, naturalNumber);
+            formula = new Formula(
+                mark,
+                modifier,
+                operandCount,
+                operatorsToggle,
+                includeMark,
+                naturalNumber
+            );
         }
 
         string question = formula.GenerateQuestion();
@@ -113,5 +129,11 @@ public class GameHandler : MonoBehaviour
 
         Debug.Log("answer: " + resultGiven);
         Debug.Log(resultGiven.ToString() == expectedResult.ToString());
+    }
+
+    public void ResetAnswer() {
+        // Send all card on board to deck
+        foreach(Card card in cards) card.BackToDeck();
+        Debug.Log("Reset answer");
     }
 }

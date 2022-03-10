@@ -8,7 +8,7 @@ public class Answer : MonoBehaviour
 {
     [SerializeField] private Board board;
     [SerializeField] private Deck deck;
-    [SerializeField] private Button button_Answer;
+    [SerializeField] private Button button_Answer, button_Reset;
     private GameHandler gameHandler;
     private List<GameObject> availableSlot = new List<GameObject>();
     private List<Transform> deckSlot = new List<Transform>();
@@ -25,6 +25,7 @@ public class Answer : MonoBehaviour
         deckSlot = deck.Slots;
         
         SetAnswerButton(button_Answer);
+        SetAnswerButton(button_Reset, y: button_Answer.transform.position.y + 4.25f);
     }
 
     void Update() {
@@ -56,17 +57,19 @@ public class Answer : MonoBehaviour
         return true;
     }
 
-    private void SetAnswerButton(Button button) {
+    private void SetAnswerButton(Button button, float x=0, float y=0) {
         button.gameObject.SetActive(true);
 
         // Set button position
         Vector3 buttonPosition = deckSlot[deckSlot.Count - 1].position;
 
-        buttonPosition.x += deck.Spacing;
+        buttonPosition.x = buttonPosition.x + deck.Spacing + x;
+        buttonPosition.y += y;
         button.transform.position = buttonPosition;
     }
 
     private void ButtonInteraction() {
+        // Enable check answer button if all cards are on board
         button_Answer.interactable = AnswerSet();
     }
 }

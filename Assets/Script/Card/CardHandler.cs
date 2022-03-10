@@ -21,7 +21,9 @@ public class CardHandler : MonoBehaviour
         void SpawnCards() {
             for(int i = 0; i < deckSlots.Count; i++) {
                 GameObject cardInstance = Instantiate(cardPrefab, deckSlots[i].position, Quaternion.identity, gameObject.transform);
+                
                 cardList.Add(cardInstance);
+                gameHandler.cards.Add(cardInstance.GetComponent<Card>());
             }
         }
 
