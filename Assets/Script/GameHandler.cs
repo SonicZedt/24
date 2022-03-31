@@ -37,7 +37,7 @@ public class GameHandler : MonoBehaviour
         set { this.minMark = value; }
         }
     public int MaxMark { 
-        get { return maxMark; }
+        get { return maxMark == 0 ? 24 : maxMark; }
         set { this.maxMark = value; }
         }
     public int OperandCount {
@@ -99,6 +99,7 @@ public class GameHandler : MonoBehaviour
                 includeMark,
                 naturalNumber
             );
+            Debug.Log($"Generated question. M{mark}, m{modifierRange}, OD{operandCount}");
         }
         else {
             formula = new Formula(
@@ -109,6 +110,7 @@ public class GameHandler : MonoBehaviour
                 includeMark,
                 naturalNumber
             );
+            Debug.Log($"Generated question. M{mark}, m{modifier}, OD{operandCount}");
         }
 
         string question = formula.GenerateQuestion();
