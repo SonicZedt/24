@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameHandler : MonoBehaviour
 {
@@ -9,12 +11,13 @@ public class GameHandler : MonoBehaviour
     
     [SerializeField] private new CameraController camera;
     [SerializeField] private NotifyResult notifyResult;
-    private Input input;
+    [SerializeField] private Button button_Continue;
     [HideInInspector] [SerializeField] private int operandCount;
     [HideInInspector] [SerializeField] private int modifier, mark, minMark, maxMark, minModifier, maxModifier;
     [HideInInspector] [SerializeField] private bool includeMark, randomMark, randomModifier, naturalNumber;
     [HideInInspector] [SerializeField] private bool[] operatorsToggle = new bool[4];
     private object expectedResult;
+    private Input input;
     private List<int> operands = new List<int>();
     private List<string> operators = new List<string>();
     private Answer answer;
@@ -83,6 +86,9 @@ public class GameHandler : MonoBehaviour
     private void GenerateFormula() {
         Formula formula;
 
+        // Disable continue button
+        if(button_Continue.gameObject.activeSelf) button_Continue.gameObject.SetActive(false);
+
         int RandomMark() {
             return (int)Random.Range(minMark, maxMark);
         }
@@ -122,15 +128,22 @@ public class GameHandler : MonoBehaviour
         Debug.Log("=======================");
     }
 
+    public void Continue() {
+        // Continue the game by generate new formula
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+    }
+
     public void CheckAnswer() {
-        // TODO: show pop up if answer is true
         DataTable dt = new DataTable();
-
         object resultGiven = dt.Compute(answer.Get, " ");
-        notifyResult.ShowNotification(resultGiven.ToString());
+        bool result = resultGiven.ToString() == expectedResult.ToString();
 
-        Debug.Log("answer: " + resultGiven);
-        Debug.Log(resultGiven.ToString() == expectedResult.ToString());
+        notifyResult.ShowNotification(resultGiven.ToString());
+        Debug.Log($"answer: {resultGiven} {result}");
+
+        // Enable continue button if answer is correct
+        if(result) button_Continue.gameObject.SetActive(true);
     }
 
     public void ResetAnswer() {
